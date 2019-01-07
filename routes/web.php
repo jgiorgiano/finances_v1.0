@@ -18,6 +18,7 @@ Route::get('/', function () {
 Route::get('/phone', 'PhoneController@index');
 
 Route::resource('account', 'AccountController')->middleware('auth');
+Route::resource('account/{account}/phone', 'PhoneController');
 
 Auth::routes(['verify' => true]);
 

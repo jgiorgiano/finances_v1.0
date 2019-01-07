@@ -3,16 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Repositories\AccountRepository;
-use App\User;
+use App\Services\accountService;
+use App\Http\Requests\accountRequest;
 
 
 class AccountController extends Controller
 {
 
-    public function __construct(User $user)
-    {
-        $this->user = new AccountRepository($user);        
+    public function __construct(accountService $service)
+    {        
+        $this->service  = $service;        
     }
 
     /**
@@ -23,18 +23,7 @@ class AccountController extends Controller
     public function index()
     {
         
-        $user_id        = \Auth::user()->id;
-        $user           = $this->user->show($user_id); 
-        $address        = $this->user->address($user_id);
-        $phone          = $this->user->phone($user_id);
-       
-
-        return view('account.index', [
-            'title'     => 'My Account',
-            'user'      => $user,
-            'address'   => $address,
-            'phone'     => $phone,            
-        ]);
+        
     }
 
     /**
@@ -53,7 +42,7 @@ class AccountController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(accountRequest $request)
     {
         //
     }
@@ -66,7 +55,16 @@ class AccountController extends Controller
      */
     public function show($id)
     {
-        //
+            
+        $data = $this->service->getFullRegister($id);       
+           
+        return view('account.index', [
+            'title'     => 'My Account',
+            'user'      => $data['user'],
+            'address'   => $data['address'],
+            'phone'     => $data['phone'],            
+        ]);
+        
     }
 
     /**
@@ -77,7 +75,7 @@ class AccountController extends Controller
      */
     public function edit($id)
     {
-        //
+        
     }
 
     /**
@@ -87,9 +85,14 @@ class AccountController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(accountRequest $request, $id)
     {
-        //
+        $validated = $request->validated();
+
+        $this->service->update($validated, $id);
+
+        return redirect()->back();
+        
     }
 
     /**
@@ -102,4 +105,6 @@ class AccountController extends Controller
     {
         //
     }
+
+    
 }
