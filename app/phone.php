@@ -11,7 +11,10 @@ class phone extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        '_method', '_token', 'number', 'label'
+        
+        'number', 
+        'label', 
+        'user_id'
     ];
 
 

@@ -45,7 +45,7 @@
                 <button type="submit" class="btn btn-success">
                     {{ __('Save') }}
                 </button>
-                <a href="#" class="btn btn-danger">Disable Account</a>            
+{{--  <a href="#" class="btn btn-danger" disabled >Disable Account</a>  --}}            
             </div>
         </div>
     </form>
@@ -56,59 +56,77 @@
         <h6 class="h6 text-center mt-1">Address</h6>
         <hr>
     @endif
-    <div class="form-row">
-        <div class="form-group col-md-1">            
-            <input type="text" value='{{ $address->number}}' class="form-control" id="number" placeholder="House Number">    
+    <form action={{ route('address.update',['account' => $address->user_id, 'address' => $address->id])}} method="POST">
+        @method('PUT')
+        @csrf
+        
+        <div class="form-row">
+            <div class="form-group col-md-1">            
+                <input type="text" value='{{ $address->number}}' class="form-control" name="number" placeholder="House Number">    
+            </div>
+            <div class="form-group col-md-2">            
+                <input type="text" value='{{ $address->name }}' class="form-control" name="name" placeholder="House Name">    
+            </div>
+            <div class="form-group col-md">            
+                <input type="text" value='{{ $address->address }}' class="form-control" name="address" placeholder="Address">    
+            </div>
         </div>
-        <div class="form-group col-md-2">            
-            <input type="text" value='{{ $address->name }}' class="form-control" id="name" placeholder="House Name">    
-        </div>
-        <div class="form-group col-md">            
-            <input type="text" value='{{ $address->adress }}' class="form-control" id="address" placeholder="Address">    
-        </div>
-    </div>
 
-    <div class="form-row">
-        <div class="form-group col-md">            
-            <input type="text" value='{{ $address->postcode }}' class="form-control" id="postcode" placeholder="Postcode">    
-        </div>
-        <div class="form-group col-md">            
-            <input type="text" value='{{ $address->city }}' class="form-control" id="city" placeholder="City">    
-        </div>
-        <div class="form-group com-md-1">
-            <a href="#" class="btn btn-success">Edit</a>
+        <div class="form-row">
+            <div class="form-group col-md">            
+                <input type="text" value='{{ $address->postcode }}' class="form-control" name="postcode" placeholder="Postcode">    
+            </div>
+            <div class="form-group col-md">            
+                <input type="text" value='{{ $address->city }}' class="form-control" name="city" placeholder="City">    
+            </div>
+            <div class="form-group col-md-1">
+                <button type="submit" class="btn btn-success">Save</button>
+            </div>
+    </form>
+        <form action="{{ route('address.destroy',['account' => $address->user_id, 'address' => $address->id])}}" method="POST">
+            @csrf
+            @method('DELETE')
+            <div class="form-group col-md-1">
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </div>
+        </form>
         </div> 
-    </div>
+    
 @endforeach
 
-@empty($address->adress)
-<h6 class="h6 text-center mt-1">Address</h6>
-<hr>
-    <div class="form-row">
-        <div class="form-group col-md-1">            
-            <input type="text" class="form-control" id="number" placeholder="House Number">    
+<div id="newAddress" {{ empty($address) ? '' : "style=display:none;" }} >
+    <h6 class="h6 text-center mt-1">New Address</h6>
+    <hr>
+    <form action= {{ route('address.store', ['account' => Auth::id()])}} method="POST"> 
+        @csrf        
+        <div class="form-row">
+            <div class="form-group col-md-1">            
+                <input type="text" class="form-control" name="number" placeholder="House Number">    
+            </div>
+            <div class="form-group col-md-2">            
+                <input type="text" class="form-control" name="name" placeholder="House Name">    
+            </div>
+            <div class="form-group col-md">            
+                <input type="text" class="form-control" name="address" placeholder="Address">    
+            </div>
         </div>
-        <div class="form-group col-md-2">            
-            <input type="text" class="form-control" id="name" placeholder="House Name">    
-        </div>
-        <div class="form-group col-md">            
-            <input type="text" class="form-control" id="address" placeholder="Address">    
-        </div>
-    </div>
 
-    <div class="form-row">
-        <div class="form-group col-md">            
-            <input type="text" class="form-control" id="postcode" placeholder="Postcode">    
+        <div class="form-row">
+            <div class="form-group col-md">            
+                <input type="text" class="form-control" name="postcode" placeholder="Postcode">    
+            </div>
+            <div class="form-group col-md">            
+                <input type="text" class="form-control" name="city" placeholder="City">    
+            </div>        
         </div>
-        <div class="form-group col-md">            
-            <input type="text" class="form-control" id="city" placeholder="City">    
-        </div>        
-    </div>
-@endempty
+        <button type="submit" class="btn btn-success">Save new</button>
+    </form>
+</div>
+
 
 
 <div class="form-group">
-    <a href="#" class="col-md-2 offset-md-10 btn btn-primary btn-sm">Add Address</a>
+    <a href="#" id="btn-newAddress" class="col-md-2 offset-md-10 btn btn-primary btn-sm">Add Address</a>
 </div>
 
 {{--  PHONE  --}}
@@ -118,12 +136,12 @@
         <h6 class="h6 text-center">Phone Number</h6>
         <hr>
         @endif
-    <form action={{route('phone.update', ['account' => $phone->users_user_id , 'phone' => $phone->id])}} method="post">
+    <form action={{route('phone.update', ['account' => $phone->user_id , 'phone' => $phone->id])}} method="post">
         @method('PUT')
         @csrf
         <div class="form-row">
             <div class="form-group col-md">            
-                <input type="text" value={{ $phone->label }} class="form-control" name="phone" placeholder="Phone Name">    
+                <input type="text" value={{ $phone->label }} class="form-control" name="label" placeholder="Phone Name">    
             </div>
             <div class="form-group col-md">            
                 <input type="text" value={{ $phone->number }} class="form-control" name="number" placeholder="Phone Number">    
@@ -133,7 +151,7 @@
             Save</button>
             </div>              
     </form>
-    <form action={{route('phone.destroy',['account' => $phone->users_user_id , 'phone' => $phone->id] )}} method="post">
+    <form action={{route('phone.destroy',['account' => $phone->user_id , 'phone' => $phone->id] )}} method="post">
         @csrf
         @method('DELETE')
             <div class="form-group col-md-1">
@@ -145,22 +163,27 @@
 
 @endforeach
 
-@empty($phone->number)
-    <h6 class="h6 text-center">Phone Number</h6>
+<div id="newPhone" {{ empty($phone) ? '' : "style=display:none;" }} >
+    <h6 class="h6 text-center">New Phone Number</h6>
     <hr>
+<form action= {{ route('phone.store', ['account' => Auth::id()])}} method="POST">
+    @csrf
     <div class="form-row">
         <div class="form-group col-md">            
-            <input type="text" class="form-control" id="phone" placeholder="Phone Name">    
+            <input type="text" class="form-control" name="label" placeholder="Phone Name">    
         </div>
         <div class="form-group col-md">            
-            <input type="text" class="form-control" id="number" placeholder="Phone Number">    
+            <input type="text" class="form-control" name="number" placeholder="Phone Number">    
         </div>              
     </div>
-@endempty
+    <button type="submit" class="btn btn-success">Save new</button>
+</form>
+</div>
+
 
 
 <div class="form-group">
-    <a href="#" class="col-md-2 offset-md-10 btn btn-primary btn-sm">Add Phone</a>
+    <a href="#" id="btn-newPhone" class="col-md-2 offset-md-10 btn btn-primary btn-sm">Add Phone</a>
 </div>
 
 <a href="{{ route('home') }}" class="btn btn-secondary">Voltar</a>

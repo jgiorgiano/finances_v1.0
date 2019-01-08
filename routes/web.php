@@ -19,7 +19,7 @@ Route::get('/phone', 'PhoneController@index');
 
 Route::resource('account', 'AccountController')->middleware('auth');
 Route::resource('account/{account}/phone', 'PhoneController');
-
+Route::resource('account/{account}/address', 'AddressController');
 Auth::routes(['verify' => true]);
 
 Route::get('/home', 'HomeController@index')->name('home')->middleware('verified');

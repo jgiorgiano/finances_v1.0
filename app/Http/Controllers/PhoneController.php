@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\phone;
 use App\Repositories\Repository;
+use App\Http\Requests\phoneRequest;
 
 class PhoneController extends Controller
 {
@@ -14,22 +15,36 @@ class PhoneController extends Controller
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Phone $phone)
     {
         $this->middleware('auth');
+        $this->phone = $phone;
     }
 
     public function index()
     {
-        $phone = $this->phone->all();
-
-        return json_encode($phone);
+        
     }
 
-    public function update(Request $request, $user_id, $phone_id)
+    public function store(phoneRequest $request, $user_id)
+    {       
+
+        $validated = $request->validated();
+        $validated['user_id'] = $user_id;
+     
+        $this->phone->create($validated);
+
+        return redirect()->back();
+
+        
+
+    }
+
+
+    public function update(phoneRequest $request, $user_id, $phone_id)
     {
-        $phone = \App\phone::find($phone_id);       
-       $t = $phone->update(['number' => $request['number'], 'label' => $request['phone']]);
+       
+        $this->phone->find($phone_id)->update($request->validated());
     
         return redirect()->back();
 
@@ -37,8 +52,7 @@ class PhoneController extends Controller
 
     public function destroy($user, $phone_id){
        
-        $phone = \App\phone::find($phone_id);
-        $phone->delete();
+      $this->phone->find($phone_id)->delete();
         
         return redirect()->back();
     }
