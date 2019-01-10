@@ -10,11 +10,11 @@ class Repository implements RepositoryInterface{
     protected $model;
 
 //Inject Dependancy    
-    public function __construct(Model $model)
+     public function __construct(Model $model)
     {
         $this->model = $model;
     }
-
+ 
 //Get all instance of model
     public function all()
     {

@@ -8,8 +8,6 @@ use App\User;
 
 class accountService {
 
-
-    protected $request;
     protected $repository;
 
     public function __construct(User $user)

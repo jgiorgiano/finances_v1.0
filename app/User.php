@@ -34,10 +34,4 @@ class User extends Authenticatable implements MustVerifyEmail
         'password', 'remember_token',
     ];
 
-
-    public function address()
-    {
-        return $this->hasMany('App\User');
-    }
-
 }

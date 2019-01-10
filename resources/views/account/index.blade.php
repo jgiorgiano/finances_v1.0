@@ -41,8 +41,8 @@
                     <option {{ $user->gender === 'O' ? 'selected' : ''}} value="O">Prefer not say</option>
                 </select>    
             </div>   
-            <div class="col-md-4">
-                <button type="submit" class="btn btn-success">
+            <div class="col-md-1 ml-2">
+                <button type="submit" class="btn btn-success float-right">
                     {{ __('Save') }}
                 </button>
 {{--  <a href="#" class="btn btn-danger" disabled >Disable Account</a>  --}}            
@@ -79,21 +79,21 @@
             <div class="form-group col-md">            
                 <input type="text" value='{{ $address->city }}' class="form-control" name="city" placeholder="City">    
             </div>
-            <div class="form-group col-md-1">
-                <button type="submit" class="btn btn-success">Save</button>
+            <div class="form-group col-md-2 ml-4">
+                <div class="btn-group float-right">
+                    <button type="submit" class="btn btn-success">Save</button>            
+    </form>
+    <form action="{{ route('address.destroy',['account' => $address->user_id, 'address' => $address->id])}}" method="POST">
+        @csrf
+        @method('DELETE')            
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </div>
             </div>
     </form>
-        <form action="{{ route('address.destroy',['account' => $address->user_id, 'address' => $address->id])}}" method="POST">
-            @csrf
-            @method('DELETE')
-            <div class="form-group col-md-1">
-                <button type="submit" class="btn btn-danger">Delete</button>
-            </div>
-        </form>
-        </div> 
-    
+        </div>     
 @endforeach
 
+{{--  NEW ADDRESS FORM  --}}
 <div id="newAddress" {{ empty($address) ? '' : "style=display:none;" }} >
     <h6 class="h6 text-center mt-1">New Address</h6>
     <hr>
@@ -117,20 +117,21 @@
             </div>
             <div class="form-group col-md">            
                 <input type="text" class="form-control" name="city" placeholder="City">    
+            </div> 
+            <div class="form-group col-xl-2">           
+                    <button type="submit" class="btn btn-success float-right">Save new</button>         
             </div>        
-        </div>
-        <button type="submit" class="btn btn-success">Save new</button>
+        </div>        
     </form>
 </div>
 
-
-
-<div class="form-group">
-    <a href="#" id="btn-newAddress" class="col-md-2 offset-md-10 btn btn-primary btn-sm">Add Address</a>
+<div class="form-row">
+    <div class="col-md">
+        <a href="" id="btn-newAddress" class="btn btn-primary btn-sm float-right my-2">Add Address</a>
+    </div>
 </div>
 
 {{--  PHONE  --}}
-
 @foreach ($phone as $phone)
     @if($loop->first)
         <h6 class="h6 text-center">Phone Number</h6>
@@ -140,22 +141,23 @@
         @method('PUT')
         @csrf
         <div class="form-row">
-            <div class="form-group col-md">            
+            <div class="form-group col-lg">            
                 <input type="text" value={{ $phone->label }} class="form-control" name="label" placeholder="Phone Name">    
             </div>
-            <div class="form-group col-md">            
+            <div class="form-group col-sm">            
                 <input type="text" value={{ $phone->number }} class="form-control" name="number" placeholder="Phone Number">    
             </div>
-            <div class="form-group col-md-1">
-            <button type="submit" class="btn btn-success">
-            Save</button>
-            </div>              
+            <div class="form-group col-sm-2 ml-4">
+                <div class="btn-group float-right">
+                    <button type="submit" class="btn btn-success">Save</button>
+                          
     </form>
     <form action={{route('phone.destroy',['account' => $phone->user_id , 'phone' => $phone->id] )}} method="post">
         @csrf
         @method('DELETE')
-            <div class="form-group col-md-1">
-                <button type="submit" class="btn btn-danger">delete</button>
+            
+                    <button type="submit" class="btn btn-danger">delete</button>
+                </div>
             </div>
     </form>
         </div>
@@ -174,16 +176,18 @@
         </div>
         <div class="form-group col-md">            
             <input type="text" class="form-control" name="number" placeholder="Phone Number">    
+        </div>
+        <div class="form-group col-xl-2">           
+            <button type="submit" class="btn btn-success float-right">Save new</button>         
         </div>              
     </div>
-    <button type="submit" class="btn btn-success">Save new</button>
 </form>
 </div>
 
-
-
-<div class="form-group">
-    <a href="#" id="btn-newPhone" class="col-md-2 offset-md-10 btn btn-primary btn-sm">Add Phone</a>
+<div class="form-row">
+    <div class="col-md">
+        <a href="" id="btn-newPhone" class="btn btn-primary btn-sm float-right my-2">Add Phone</a>
+    </div>
 </div>
 
 <a href="{{ route('home') }}" class="btn btn-secondary">Voltar</a>
