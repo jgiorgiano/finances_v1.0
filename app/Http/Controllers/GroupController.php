@@ -36,11 +36,12 @@ class GroupController extends Controller
 
     public function invite(Request $request, $user_id, $group_id){
 
-        $validated = \Validator::make($request->all(), [
+        $validated = $request->validate([
             'email' => 'required|email',
         ]);
 
-        $this->service->invite($validated->email, $user_id, $group_id);
+      
+        return $this->service->invite($validated['email'], $user_id, $group_id);
 
 
 
@@ -69,6 +70,7 @@ class GroupController extends Controller
     public function show($userId, $groupId)
     {
         $data = $this->service->show($groupId);
+        
        
         return view('group.show', [
             'title'     => 'Gerenciar Grupo: '.$data['group']->nome . '.',
@@ -115,5 +117,13 @@ class GroupController extends Controller
         $this->service->delete($user_id, $group_id);
 
         return redirect('home');
+    }
+
+    public function deleteMember($group_id, $user_id)
+    {
+        $this->service->deleteMember($group_id, $user_id);
+
+        return redirect()->back();
+
     }
 }

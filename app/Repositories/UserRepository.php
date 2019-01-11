@@ -7,14 +7,14 @@ use App\Repositories\Repository;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 
-class AccountRepository extends Repository{
-
+class UserRepository extends Repository{
+/* 
     protected $model;
 
     public function __construct(Model $model)
     {
         $this->model = $model;
-    } 
+    }  */
 
 //get All Address related to the Account Id.
     public function address($id)
@@ -34,9 +34,9 @@ class AccountRepository extends Repository{
     public function userByEmail($email)
     {
 
-        $user = DB::table('users')->where('email', $email);
+        return DB::table('users')->where('email', $email)->first();
+
         
-        dd($user);
     }
    
 

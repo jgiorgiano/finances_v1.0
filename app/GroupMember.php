@@ -15,6 +15,7 @@ class GroupMember extends Model
         'group_id',
         'nivel_acesso_id',
         'accepted_at',
+        'remember_token'
     ];
 
 }

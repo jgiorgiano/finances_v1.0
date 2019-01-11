@@ -7,7 +7,9 @@ use App\GroupMember;
 use App\User;
 use App\Http\Requests\groupRequest;
 use App\Repositories\GroupRepository;
-use App\Repositories\AccountRepository;
+use App\Repositories\UserRepository;
+use App\Repositories\GroupMemberRepository;
+
 class groupService {
 
     protected $repository;
@@ -15,8 +17,8 @@ class groupService {
     public function __construct(Group $group, User $user, GroupMember $groupMember)
     {
         $this->repository = new GroupRepository($group);
-        $this->user = new AccountRepository($user); 
-        $this->member = $groupMember;
+        $this->user = new UserRepository($user); 
+        $this->member = new GroupMemberRepository($groupMember);
     }
 
 
@@ -78,14 +80,66 @@ class groupService {
 
     }
 
-    public function Invite($request, $user_id, $group_id)
+    public function Invite($email, $user_id, $group_id)
     {
 
-        dd($request);
+// Check if the user has Account
+        if(empty($this->user->userByEmail($email)->email)){
 
-        $this->user->userByEmail();
+    //If Not, Register a new user only with Email            
+            try{
+
+               $user = $this->user->create([
+                    'email' => $email,                    
+                ]);
+
+                $this->member->create([
+                    'user_id'           => $user->id,
+                    'group_id'          => $group_id,
+                    'nivel_acesso_id'   => 1,
+                    ]);
+
+                var_dump('send EMail to create account');
+                    
+            }
+
+            catch(Exception $e)
+            {
+                var_dump($e);
+            }
 
 
+
+        }else{
+            try{
+
+                $this->member->create([
+                    'group_id'      => $group_id,
+                    'user_id'       => $this->user->userByEmail($email)->id,
+                    'nivel_acesso_id'   => 1,
+                ]);
+
+                var_dump('send Email to accept ');
+            
+                }
+
+            catch(Exception $e){
+
+                var_dump($e);
+
+
+            }
+
+        }
+
+    }
+
+    public function deleteMember($group_id, $user_id)
+    {
+
+        return $this->member->deleteMember($group_id, $user_id);
+
+       
     }
 
 

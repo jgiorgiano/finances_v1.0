@@ -14,3 +14,8 @@ $('#btn-newGroup').on('click', function(e){
     e.preventDefault();
     $('#newGroup').slideToggle(700);
 })
+
+$('#btn-newMember').on('click', function(e){
+    e.preventDefault();
+    $('#newMember').slideToggle(700);
+})

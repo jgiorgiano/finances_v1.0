@@ -3,14 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Services\accountService;
-use App\Http\Requests\accountRequest;
+use App\Services\userService;
+use App\Http\Requests\userRequest;
 
 
-class AccountController extends Controller
+class UserController extends Controller
 {
 
-    public function __construct(accountService $service)
+    public function __construct(userService $service)
     {        
         $this->service  = $service;        
     }

@@ -2,17 +2,17 @@
 
 namespace App\Services;
 
-use App\Repositories\AccountRepository;
-use App\Http\Requests\accountRequest;
+use App\Repositories\UserRepository;
+use App\Http\Requests\userRequest;
 use App\User;
 
-class accountService {
+class userService {
 
     protected $repository;
 
     public function __construct(User $user)
     {
-        $this->repository  = new AccountRepository($user);
+        $this->repository  = new UserRepository($user);
     }
 
     public function getFullRegister($id)

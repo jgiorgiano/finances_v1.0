@@ -32,12 +32,18 @@ class GroupRepository extends Repository{
             'users.last_name', 
             'users.email',
             'group_has_users.nivel_acesso_id',
+            'group_has_users.accepted_at',
             'nivel_acesso.nome as nivel_acesso')
         ->where('group_has_users.group_id', $group_id)
         ->join('users', 'group_has_users.user_id', '=', 'users.id')
         ->join('nivel_acesso', 'group_has_users.nivel_acesso_id', '=', 'nivel_acesso.id')
         ->get();        
     }
+
+    
+
+
+    
    
 
 
