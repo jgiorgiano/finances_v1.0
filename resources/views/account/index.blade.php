@@ -13,10 +13,10 @@
 
         <div class="form-row">
             <div class="form-group col-md">            
-                <input type="text" value='Username:  {{ $user->username }}' disabled class="form-control" name="username" placeholder="UserName">    
+                <input type="text" value='{{ $user->username }}' class="form-control" name="username" placeholder="Username">    
             </div>
             <div class="form-group col-md">            
-                <input type="email" value='{{ $user->email }}' class="form-control" name="email" placeholder="Email">    
+                <input type="email" value='{{ $user->email }}' class="form-control" disabled placeholder="Email">    
             </div>
         </div>
 

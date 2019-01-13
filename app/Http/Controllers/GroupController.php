@@ -14,36 +14,26 @@ class GroupController extends Controller
         $this->service = $service;
 
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+    
 
     public function invite(Request $request, $user_id, $group_id){
 
         $validated = $request->validate([
             'email' => 'required|email',
         ]);
-
       
-        return $this->service->invite($validated['email'], $user_id, $group_id);
+        $this->service->invite($validated['email'], $user_id, $group_id);
+
+        return redirect()->back();
 
 
+    }
+
+    public function joinGroup($user_id, $group_id)
+    {
+        $this->service->joinGroup($user_id, $group_id);
+
+        return redirect()->back();
 
     }
 
@@ -79,16 +69,6 @@ class GroupController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -118,6 +98,7 @@ class GroupController extends Controller
 
         return redirect('home');
     }
+    
 
     public function deleteMember($group_id, $user_id)
     {
@@ -126,4 +107,7 @@ class GroupController extends Controller
         return redirect()->back();
 
     }
+
+
+
 }

@@ -28,26 +28,32 @@
 @foreach($members as $member)
 
     <div class="form-row mb-2 align-items-end">
-        <div class="col-md-3">
+        <div class="col-md">
             @if($loop->first)    
                 <label for="first_name">Nome</label>
             @endif
             <input type="text" class="form-control" value = {{$member->first_name ?? 'Aguardando'}} name="first_name" id="first_name" disabled>
         </div>
-        <div class="col-md-3">
+        <div class="col-md">
             @if($loop->first)
                 <label for="last_name">Sobrenome</label>
             @endif
             <input type="text" class="form-control" value = {{$member->last_name ?? 'Usuario'}} name="last_name" id="last_name" disabled>
         </div>
-        <div class="col-md-3">
+        <div class="col-md">
             @if($loop->first)
                 <label for="email">Email</label>
             @endif    
             <input type="text" class="form-control" value = {{$member->email}} email="email" id="email" disabled>
         </div>
+    @if(Auth::id() == $group->owner_id)
         <div class="col-xs-3">
             <div class="form-row mt-1  justify-content-end">
+        @if($member->id === $group->owner_id)
+                <div>
+                    <button class="btn btn-success btn-sm"> Owner</button>
+                </div>
+        @else
             @if($member->accepted_at)
                 <div class="col">
                     <form action="#">
@@ -68,8 +74,10 @@
                         <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
                     </form>
                 </div>
+        @endif
             </div>
         </div>
+    @endif
     </div>
 @endforeach
 

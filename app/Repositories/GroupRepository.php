@@ -40,6 +40,24 @@ class GroupRepository extends Repository{
         ->get();        
     }
 
+
+    public function memberGroups($user_id)
+    {
+
+        return DB::table('group_has_users')
+        ->select(
+            'group.*',
+            'users.first_name',
+            'users.last_name',
+            'group_has_users.nivel_acesso_id',
+            'group_has_users.accepted_at')
+        ->where('user_id', $user_id)
+        ->join('group', 'group_has_users.group_id', '=', 'group.id')
+        ->join('users', 'group.owner_id', '=', 'users.id')
+        ->get();
+
+    }
+
     
 
 

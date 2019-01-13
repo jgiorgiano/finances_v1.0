@@ -5,6 +5,8 @@ namespace App\Services;
 use App\Group;
 use App\GroupMember;
 use App\User;
+use App\Mail\inviteNewUser;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\groupRequest;
 use App\Repositories\GroupRepository;
 use App\Repositories\UserRepository;
@@ -25,7 +27,7 @@ class groupService {
     public function homeIndex($id)
     {
        
-        return $this->repository->groupsWithOwner($id);
+        return $this->repository->memberGroups($id);
 
     }
 
@@ -34,6 +36,7 @@ class groupService {
 
         return $this->repository->all();
     }
+
 
     public function store($request, $owner_id)
     {
@@ -80,27 +83,31 @@ class groupService {
 
     }
 
-    public function Invite($email, $user_id, $group_id)
+    public function invite($email, $user_id, $group_id)
     {
-
+       
 // Check if the user has Account
         if(empty($this->user->userByEmail($email)->email)){
 
-    //If Not, Register a new user only with Email            
+    //If Not, create an Invitation       
             try{
-
-               $user = $this->user->create([
-                    'email' => $email,                    
+               
+                $token = bin2hex(random_bytes(32));
+                
+                $invited = \App\Invitation::create([                
+                    'email'     => $email,
+                    'token'     => $token,
+                    'group_id'  => $group_id,
+                    'host_id'   => $user_id
                 ]);
 
-                $this->member->create([
-                    'user_id'           => $user->id,
-                    'group_id'          => $group_id,
-                    'nivel_acesso_id'   => 1,
-                    ]);
+                $data['invite']     = $invited;               
+                $data['group']      = $this->repository->show($group_id)->nome;
+                $data['host']       = $this->user->show($user_id)->first_name;
 
-                var_dump('send EMail to create account');
-                    
+                Mail::to($invited->email)->queue(new inviteNewUser($data));
+
+                                    
             }
 
             catch(Exception $e)
@@ -111,15 +118,12 @@ class groupService {
 
 
         }else{
+
             try{
 
-                $this->member->create([
-                    'group_id'      => $group_id,
-                    'user_id'       => $this->user->userByEmail($email)->id,
-                    'nivel_acesso_id'   => 1,
-                ]);
+                $this->createMember($group_id, $this->user->userByEmail($email)->id);
 
-                var_dump('send Email to accept ');
+                var_dump('send Email to notify and in App Notification');
             
                 }
 
@@ -134,12 +138,31 @@ class groupService {
 
     }
 
+    public function joinGroup($user_id, $group_id)
+    {
+
+      return  $this->member->memberAccept($user_id, $group_id);
+
+
+
+    }
+
     public function deleteMember($group_id, $user_id)
     {
 
         return $this->member->deleteMember($group_id, $user_id);
 
        
+    }
+
+    public function createMember($group_id, $user_id)
+    {
+        return $this->member->create([
+            'group_id'          => $group_id,
+            'user_id'           => $user_id,
+            'nivel_acesso_id'   => 1,
+        ]);
+        
     }
 
 

@@ -23,8 +23,10 @@ Route::resource('account/{account}/address', 'AddressController');
 Route::resource('account/{account}/group', 'GroupController');
 Route::post('account/{account}/group/{group}/invite', 'GroupController@invite')->name('group.invite');
 Route::DELETE('/group/{group}/member/{member}', 'GroupController@deleteMember')->name('group.deleteMember');
+Route::get('/group/{group}/member/{member}', 'GroupController@joinGroup')->name('group.joinGroup');
 
-
+Route::get('account/{account}/create/{token}', 'UserController@invitedForm');
+Route::post('invited/Register', 'UserController@invitedRegister')->name('invited.register');
 
 Auth::routes(['verify' => true]);
 

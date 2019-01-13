@@ -15,37 +15,6 @@ class UserController extends Controller
         $this->service  = $service;        
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        
-        
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(accountRequest $request)
-    {
-        //
-    }
 
     /**
      * Display the specified resource.
@@ -67,17 +36,7 @@ class UserController extends Controller
         
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        
-    }
-
+   
     /**
      * Update the specified resource in storage.
      *
@@ -85,7 +44,7 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(accountRequest $request, $id)
+    public function update(userRequest $request, $id)
     {
         $validated = $request->validated();
 
@@ -94,6 +53,29 @@ class UserController extends Controller
         return redirect()->back();
         
     }
+
+    public function invitedForm($email, $token)    
+    {
+        $data = $this->service->invitedForm($email, $token);
+
+       
+
+        return view('auth.register', [
+            'title'     => 'Complete your Register',
+            'data'      => $data,                      
+        ]);
+    }
+
+    public function invitedRegister(userRequest $request)
+    {
+        
+        $this->service->invitedRegister($request->all());
+
+        return redirect()->route('login');
+
+    }
+
+
 
     /**
      * Remove the specified resource from storage.

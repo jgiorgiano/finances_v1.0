@@ -24,9 +24,9 @@ class HomeController extends Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function index()
-    {
+    {           
+        $groups = $this->groupService->homeIndex(\Auth::id());    
                 
-        $groups = $this->groupService->homeIndex(\Auth::id());        
         
         return view('home',[
             'title'     => 'Dashboard',

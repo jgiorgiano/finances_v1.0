@@ -7,17 +7,42 @@ You Are logged in!!
 
 @foreach($groups as $group)
 
+@empty($group->accepted_at)
+    <a href="#">
+    <div class="card text-white bg-light my-3">
+        <div class="card-body">
+            <h5 class="card-title"> Group Name: {{ $group->nome }}</h5>
+            <h6 class="card-subtitle">Group Manager: {{ $group->first_name}} {{$group->last_name}}</h6>
+            <a href={{ route('group.joinGroup', ['account' => \Auth::id(), 'group' => $group->id ]) }} class="btn btn-success btn-sm float-right"> 
+                Join Group
+            </a>
+        <form action={{ route('group.deleteMember', ['account' => \Auth::id(), 'group' => $group->id ]) }} method="POST">
+            @method('DELETE')
+            @csrf
+            <button class="btn btn-danger btn-sm float-right"> 
+                Delete Invitation
+            </button>            
+        </form>
+        
+        </div>
+    </div>
+    </a>
+@endempty
+
+@isset($group->accepted_at)
     <a href="#">
     <div class="card text-white bg-light my-3">
         <div class="card-body">
           <h5 class="card-title"> Group Name: {{ $group->nome }}</h5>
-          <h6 class="card-subtitle">Group Manager: {{ $group->username}}</h6>
+          <h6 class="card-subtitle">Group Manager: {{ $group->first_name}} {{$group->last_name}}</h6>
           <a href={{ route('group.show', ['account' => \Auth::id(), 'group' => $group->id ]) }} class="btn btn-primary float-right"> 
             Gerenciar group 
         </a>
+            <small>Created at: {{$group->created_at}}</small>
         </div>
     </div>
     </a>
+@endisset
 
 @endforeach
 

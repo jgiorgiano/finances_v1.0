@@ -21,11 +21,6 @@ class PhoneController extends Controller
         $this->phone = $phone;
     }
 
-    public function index()
-    {
-        
-    }
-
     public function store(phoneRequest $request, $user_id)
     {       
 
@@ -35,8 +30,6 @@ class PhoneController extends Controller
         $this->phone->create($validated);
 
         return redirect()->back();
-
-        
 
     }
 
@@ -50,10 +43,12 @@ class PhoneController extends Controller
 
     }
 
+
     public function destroy($user, $phone_id){
        
       $this->phone->find($phone_id)->delete();
         
         return redirect()->back();
     }
+    
 }

@@ -33,10 +33,23 @@ class UserRepository extends Repository{
 
     public function userByEmail($email)
     {
-
         return DB::table('users')->where('email', $email)->first();
 
-        
+    }
+
+    public function create(array $data)
+    {
+        return $this->model->create([
+            'username'      => $data['username'], 
+            'first_name'    => $data['first_name'],
+            'last_name'     => $data['last_name'],
+            'birthday'      => $data['birthday'],
+            'gender'        => $data['gender'],
+            'email'         => $data['email'],
+            'password'      => \Hash::make($data['password']),
+        ]);
+
+
     }
    
 
