@@ -5,7 +5,9 @@ namespace App\Services;
 use App\Group;
 use App\GroupMember;
 use App\User;
+use App\Invitation;
 use App\Mail\inviteNewUser;
+use App\Mail\joinGroupNotice;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\groupRequest;
 use App\Repositories\GroupRepository;
@@ -21,6 +23,7 @@ class groupService {
         $this->repository = new GroupRepository($group);
         $this->user = new UserRepository($user); 
         $this->member = new GroupMemberRepository($groupMember);
+        
     }
 
 
@@ -60,9 +63,13 @@ class groupService {
     {
         $members    = $this->repository->groupMembers($groupId);
         $group      = $this->repository->show($groupId);
-
-        return array('members' => $members, 'group' => $group);
+        $invitations = Invitation::getByGroupId($groupId);
+        
+        return array('members' => $members, 'group' => $group, 'invitations' => $invitations);
     }
+
+
+
 
     public function update($request, $user_id, $group_id)
     {        
@@ -86,26 +93,30 @@ class groupService {
     public function invite($email, $user_id, $group_id)
     {
        
+        $user = $this->user->userByEmail($email);
+
+        $data['group']      = $this->repository->show($group_id)->nome;
+        $data['host']       = $this->user->show($user_id)->first_name;
+
+       
 // Check if the user has Account
-        if(empty($this->user->userByEmail($email)->email)){
+        if(empty($user->email)){
 
     //If Not, create an Invitation       
             try{
                
                 $token = bin2hex(random_bytes(32));
                 
-                $invited = \App\Invitation::create([                
+                $invited = Invitation::create([                
                     'email'     => $email,
                     'token'     => $token,
                     'group_id'  => $group_id,
                     'host_id'   => $user_id
                 ]);
 
-                $data['invite']     = $invited;               
-                $data['group']      = $this->repository->show($group_id)->nome;
-                $data['host']       = $this->user->show($user_id)->first_name;
+                $data['invite'] = $invited;
 
-                Mail::to($invited->email)->queue(new inviteNewUser($data));
+                Mail::to($email)->queue(new inviteNewUser($data));
 
                                     
             }
@@ -120,10 +131,12 @@ class groupService {
         }else{
 
             try{
+                
+                $user = $this->user->userByEmail($email);
 
-                $this->createMember($group_id, $this->user->userByEmail($email)->id);
+                $this->createMember($user->id, $group_id);
 
-                var_dump('send Email to notify and in App Notification');
+                Mail::to($user->email)->queue(new joinGroupNotice($data));
             
                 }
 
@@ -147,15 +160,15 @@ class groupService {
 
     }
 
-    public function deleteMember($group_id, $user_id)
+    public function deleteMember($user_id, $group_id)
     {
 
-        return $this->member->deleteMember($group_id, $user_id);
+        return $this->member->deleteMember($user_id, $group_id);
 
        
     }
 
-    public function createMember($group_id, $user_id)
+    public function createMember($user_id, $group_id)
     {
         return $this->member->create([
             'group_id'          => $group_id,

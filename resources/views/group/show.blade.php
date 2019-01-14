@@ -22,12 +22,12 @@
 </form>
 
 <hr>
-<h6 class="lead"> Usuarios Registrados no grupo </h6>
+<h6 class="lead"> Usuarios Participantes do grupo </h6>
 <hr>
 
 @foreach($members as $member)
 
-    <div class="form-row mb-2 align-items-end">
+    <div class="form-row mb-2 align-items-end {{ $member->id === $group->owner_id ? 'bg-success border border-success rounded p-1' : ''}} ">
         <div class="col-md">
             @if($loop->first)    
                 <label for="first_name">Nome</label>
@@ -51,16 +51,10 @@
             <div class="form-row mt-1  justify-content-end">
         @if($member->id === $group->owner_id)
                 <div>
-                    <button class="btn btn-success btn-sm"> Owner</button>
+                    <h6 class="h6">Gerente</h6 >
                 </div>
         @else
-            @if($member->accepted_at)
-                <div class="col">
-                    <form action="#">
-                        <button class="btn btn-info btn-sm">Desativar</button>                
-                    </form>
-                </div>
-            @else
+            @if(!$member->accepted_at)                
                 <div class="col">
                     <form action="#">
                         <button class="btn btn-warning btn-sm" disabled >Aguardando</button>                
@@ -68,7 +62,7 @@
                 </div>
             @endif
                 <div class="col">
-                    <form action={{ route('group.deleteMember', ['group_id' => $group->id, 'user_id' => $member->id])}} method="POST">
+                    <form action={{ route('group.deleteMember', ['account' => \Auth::id(), 'group' => $group->id, 'member' => $member->id])}} method="POST">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
@@ -102,8 +96,34 @@
         </div>            
             </form>        
     </div>
+    
+@empty(!$invitations)
+    <hr>
+    <h6 class="lead"> Convites Enviados</h6>
+    <hr>
+
+    @foreach($invitations as $invited)
+    <div class="form-row mb-2 align-items-end justify-content-center">
+        <div class="col-md-6">
+            @if($loop->first)    
+                <label for="email">Email do Convidado</label>
+            @endif
+            <input type="text" class="form-control" value = {{$invited->email ?? 'Aguardando'}} name="email" id="email" disabled>
+        </div>
+        <div class="col-md-3">
+            <form action={{ route('group.cancelInvitation', ['account' => \Auth::id(), 'group' => $group->id, 'invitation' => $invited->id])}} method="POST">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-danger btn-sm">Cancelar Convite</button>
+            </form>
+        </div>
+    
+    </div>
+    @endforeach
+@endempty 
 
     <hr>
+
     
     <div class="row">
         <div class="col-md">
@@ -114,5 +134,19 @@
             </form>
         </div>
     </div>
+@else
+    <div class="row">
+        <div class="col-md">
+            <form action={{ route('group.leave', ['account' => \Auth::id(), 'group' => $group->id ]) }} method="POST">
+                @method('DELETE')
+                @csrf
+                <button class="btn btn-danger btn-sm float-right"> 
+                    Deixar Grupo
+                </button>            
+            </form>
+        </div>
+    </div>
 @endif
+
+
 @endsection

@@ -31,6 +31,7 @@ class GroupController extends Controller
 
     public function joinGroup($user_id, $group_id)
     {
+        
         $this->service->joinGroup($user_id, $group_id);
 
         return redirect()->back();
@@ -65,7 +66,8 @@ class GroupController extends Controller
         return view('group.show', [
             'title'     => 'Gerenciar Grupo: '.$data['group']->nome . '.',
             'group'     => $data['group'],
-            'members'   => $data['members']
+            'members'   => $data['members'],
+            'invitations' => $data['invitations']
         ]);
     }
 
@@ -100,12 +102,19 @@ class GroupController extends Controller
     }
     
 
-    public function deleteMember($group_id, $user_id)
-    {
-        $this->service->deleteMember($group_id, $user_id);
+    public function leaveGroup($user_id, $group_id)    {
+     
+        $this->service->deleteMember($user_id, $group_id);
 
         return redirect()->back();
 
+    }
+
+    public function deleteMember($owner_id, $group_id, $member_id)
+    {
+        $this->service->deleteMember($member_id, $group_id);
+
+        return redirect()->back();
     }
 
 

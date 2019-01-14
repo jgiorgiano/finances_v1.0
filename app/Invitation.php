@@ -24,4 +24,10 @@ class Invitation extends Model
 
     }
 
+    public static function getByGroupId($id)
+    {
+        return DB::table('invitation')->where('group_id', $id)->get();
+
+    }
+
 }
