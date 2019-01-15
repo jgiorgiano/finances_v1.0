@@ -31,4 +31,15 @@ class addressRequest extends FormRequest
             'city'      => 'required',
         ];
     }
+
+    public function attribute()
+    {
+       
+    }
+
+    public function messages()
+    {
+        return ['postcode.required' => 'Postcode is required',
+        ];
+    }
 }

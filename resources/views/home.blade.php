@@ -7,8 +7,7 @@ You Are logged in!!
 
 @foreach($groups as $group)
 
-@empty($group->accepted_at)
-    <a href="#">
+@empty($group->accepted_at)    
     <div class="card text-white bg-light my-3">
         <div class="card-body">
             <h5 class="card-title"> Group Name: {{ $group->nome }}</h5>
@@ -25,12 +24,11 @@ You Are logged in!!
         </form>
         
         </div>
-    </div>
-    </a>
+    </div>   
 @endempty
 
 @isset($group->accepted_at)
-    <a href="#">
+    <a href={{'account/' . \Auth::id() . '/group/' . $group->id . '/home'}}>
     <div class="card text-white bg-light my-3">
         <div class="card-body">
           <h5 class="card-title"> Group Name: {{ $group->nome }}</h5>
@@ -51,6 +49,16 @@ You Are logged in!!
         <a href="" id="btn-newGroup" class="btn btn-success btn-sm float-right"> Criar Novo Grupo</a>
     </div>
 </div>
+@if($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+        @foreach ($errors->all() as $error)
+            <li>{{$error}}</li>
+        @endforeach
+        </ul>
+    </div>
+@endif
+        
 
 <div id="newGroup" class="mb-3" style='display:none';>
     <form action={{route('group.store', ['account' => Auth::id()])}} method="POST">
@@ -58,7 +66,7 @@ You Are logged in!!
         <div class="form-row align-items-end justify-content-center">
             <div class="col-md-9">
                 <label for="nome"> Nome do Grupo</label>
-                <input type="text" class="form-control" name="nome" id="nome">                
+                <input type="text" class="form-control" name="nome" id="nome" required>                
             </div>
             <div class="col-md-1">
                 <button type="submit" class="btn btn-primary"> Criar </button>

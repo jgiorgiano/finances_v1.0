@@ -76,7 +76,15 @@
 @endforeach
 
 <hr>
-
+    @if($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{$error}}</li>
+            @endforeach
+        </ul>
+    </div>    
+    @endif
 @if(Auth::id() == $group->owner_id)
     <div class="row">
         <div class="col-md">
@@ -89,7 +97,7 @@
             <form action={{route('group.invite', ['account' => Auth::id(), 'group' => $group->id]) }} method="POST">
                 @csrf
             <label for="email">E-mail</label>
-            <input type="text" class="form-control" name="email" id="email" placeholder="Digite um Email para envio do convite">   
+            <input type="text" class="form-control" name="email" id="email" placeholder="Digite um Email para envio do convite" required>   
         </div>
         <div class="col-md-4">
             <button type="submit" class="btn btn-success">Enviar convite</button>

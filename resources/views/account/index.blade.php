@@ -5,6 +5,15 @@
 <h3 class="h3 text-center strong" >Personal Info</h3>
 
 <hr>
+    @if ($errors->any())
+        <div class="alert alert-danger" role="alert">
+            <ul>
+            @foreach($errors->all() as $message)
+                <li><strong>{{ $message }}</strong></br></li>
+            @endforeach
+            </ul>
+        </div>
+    @endif
 
 <div class="card-body">
     <form method="POST" action="{{ route('account.update', ['account' => $user->id]) }}">
@@ -13,33 +22,64 @@
 
         <div class="form-row">
             <div class="form-group col-md">            
-                <input type="text" value='{{ $user->username }}' class="form-control" name="username" placeholder="Username">    
+                <input type="text" value='{{ $user->username }}' class="form-control {{ $errors->has('username') ? ' is-invalid' : '' }}" 
+                name="username" placeholder="Username" required>    
+                @if ($errors->has('username'))
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $errors->first('username') }}</strong>
+                    </span>
+                @endif
             </div>
             <div class="form-group col-md">            
                 <input type="email" value='{{ $user->email }}' class="form-control" disabled placeholder="Email">    
+            
             </div>
         </div>
 
         <div class="form-row">
             <div class="form-group col-md">            
-                <input type="text" value='{{ $user->first_name }}' class="form-control" name="first_name" placeholder="First Name">    
+                <input type="text" value='{{ $user->first_name }}' class="form-control {{ $errors->has('first_name') ? ' is-invalid' : '' }}" 
+                name="first_name" placeholder="First Name" required>    
+            @if ($errors->has('first_name'))
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $errors->first('first_name') }}</strong>
+                </span>
+            @endif
             </div>
             <div class="form-group col-md">            
-                <input type="text" value='{{ $user->last_name }}' class="form-control" name="last_name" placeholder="Last Name">    
+                <input type="text" value='{{ $user->last_name }}' class="form-control {{ $errors->has('last_name') ? ' is-invalid' : '' }} "
+                 name="last_name" placeholder="Last Name" required>    
+            @if ($errors->has('last_name'))
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $errors->first('last_name') }}</strong>
+                </span>
+            @endif
             </div>
         </div>
 
         <div class="form-row">
             <div class="form-group col-md">            
-                <input type="date" value='{{ $user->birthday }}' class="form-control" name="birthday">    
+                <input type="date" value='{{ $user->birthday }}' class="form-control {{ $errors->has('birthday') ? ' is-invalid' : '' }}" 
+                name="birthday" required>    
+            @if ($errors->has('birthday'))
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $errors->first('birthday') }}</strong>
+                </span>
+            @endif
             </div>
             <div class="form-group col-md">            
-                <select class="custom-select" name="gender" name="gender">
+                <select class="custom-select {{ $errors->has('gender') ? ' is-invalid' : '' }}"
+                    name="gender" name="gender" required>
                     <option {{ $user->gender === '' ? 'selected' : ''}}>Choose...</option>
                     <option {{ $user->gender === 'M' ? 'selected' : ''}} value="M">Male</option>
                     <option {{ $user->gender === 'F' ? 'selected' : ''}} value="F">Female</option>
                     <option {{ $user->gender === 'O' ? 'selected' : ''}} value="O">Prefer not say</option>
                 </select>    
+            @if ($errors->has('gender'))
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $errors->first('gender') }}</strong>
+                </span>
+            @endif
             </div>   
             <div class="col-md-1 ml-2">
                 <button type="submit" class="btn btn-success float-right">
@@ -55,6 +95,13 @@
     @if($loop->first)
         <h6 class="h6 text-center mt-1">Address</h6>
         <hr>
+        @if ($errors->any())
+        <span class="invalid-feedback" role="alert">
+            @foreach($errors->all() as $message)
+                    <strong>{{ $message }}</strong>
+                    @endforeach
+                </span>
+        @endif
     @endif
     <form action={{ route('address.update',['account' => $address->user_id, 'address' => $address->id])}} method="POST">
         @method('PUT')
@@ -62,7 +109,7 @@
         
         <div class="form-row">
             <div class="form-group col-md-1">            
-                <input type="text" value='{{ $address->number}}' class="form-control" name="number" placeholder="House Number">    
+                <input type="text" value='{{ $address->number}}' class="form-control" name="number" placeholder="House Number">  
             </div>
             <div class="form-group col-md-2">            
                 <input type="text" value='{{ $address->name }}' class="form-control" name="name" placeholder="House Name">    
@@ -107,16 +154,16 @@
                 <input type="text" class="form-control" name="name" placeholder="House Name">    
             </div>
             <div class="form-group col-md">            
-                <input type="text" class="form-control" name="address" placeholder="Address">    
+                <input type="text" class="form-control" name="address" placeholder="Address" required>    
             </div>
         </div>
 
         <div class="form-row">
             <div class="form-group col-md">            
-                <input type="text" class="form-control" name="postcode" placeholder="Postcode">    
+                <input type="text" class="form-control" name="postcode" placeholder="Postcode" required>    
             </div>
             <div class="form-group col-md">            
-                <input type="text" class="form-control" name="city" placeholder="City">    
+                <input type="text" class="form-control" name="city" placeholder="City" required>    
             </div> 
             <div class="form-group col-xl-2">           
                     <button type="submit" class="btn btn-success float-right">Save new</button>         
@@ -172,10 +219,10 @@
     @csrf
     <div class="form-row">
         <div class="form-group col-md">            
-            <input type="text" class="form-control" name="label" placeholder="Phone Name">    
+            <input type="text" class="form-control" name="label" placeholder="Phone Name" required>    
         </div>
         <div class="form-group col-md">            
-            <input type="text" class="form-control" name="number" placeholder="Phone Number">    
+            <input type="text" class="form-control" name="number" placeholder="Phone Number" required>    
         </div>
         <div class="form-group col-xl-2">           
             <button type="submit" class="btn btn-success float-right">Save new</button>         
