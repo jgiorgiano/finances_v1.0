@@ -68,15 +68,22 @@
                         Configuracões <span class="caret"></span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href={{ route('home') }}>
-                                Nova Conta
+                        <a class="dropdown-item" href={{ route('categorias.index',[Auth::id(), 1]) }}>
+                                Categorias
                         </a>
-                        <a class="dropdown-item" href={{ route('account.show', Auth::user()->id) }}>
-                                Relatorio
+                        <a class="dropdown-item" href={{ route('centrocusto.index', [Auth::id(), 1]) }}>
+                                Centros de Custo
                         </a>
-                        <a class="dropdown-item" href="{{ route('logout') }}">
-                            Quitar conta
+                        <a class="dropdown-item" href="{{ route('situacao.index',[Auth::id(), 1]) }}">
+                                Situacão de Conta
                         </a>
+                        <a class="dropdown-item" href="{{ route('contacorrente.index',[Auth::id(), 1]) }}">
+                                Contas Corrente
+                        </a>
+                        <a class="dropdown-item" href="{{ route('formapagamento.index',[Auth::id(), 1]) }}">
+                                Formas de Pagamentos
+                        </a>
+
                     </div>
                 </li>
 

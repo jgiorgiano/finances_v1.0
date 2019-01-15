@@ -11,6 +11,7 @@
 |
 */
 
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -35,6 +36,12 @@ Route::middleware(['auth', 'user', 'groupMember'])->group(function(){
     Route::get('account/{account}/group/{group}/home', function(){
         return view('finance.home');
     });
+
+    Route::resource('account/{account}/group/{group}/categorias',       '\App\ModuleFinance\Controllers\CategoriaController');
+    Route::resource('account/{account}/group/{group}/centrocusto',      '\App\ModuleFinance\Controllers\CentroCustoController');
+    Route::resource('account/{account}/group/{group}/situacao',         '\App\ModuleFinance\Controllers\SituacaoController');
+    Route::resource('account/{account}/group/{group}/formapagamento',   '\App\ModuleFinance\Controllers\FormaPagamentoController');
+    Route::resource('account/{account}/group/{group}/contacorrente',    '\App\ModuleFinance\Controllers\ContaCorrenteController');
 
 
 
