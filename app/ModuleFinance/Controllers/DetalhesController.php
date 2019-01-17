@@ -9,17 +9,21 @@ use App\ModuleFinance\Controllers\DetalhesControllerInterface;
 class DetalhesController extends Controller implements DetalhesControllerInterface
 {
    
+  
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        $collection = $this->repository->all();
+    public function index($id, $group_id)
+    {        
+        
+        $collection = $this->repository->allFromGroup($group_id);        
 
         return view('finance.detalhes.index',
             [
+                'title' => $this->title,
+                'route' => $this->route,
                 'data' => $collection
             ]);
         }
@@ -30,19 +34,22 @@ class DetalhesController extends Controller implements DetalhesControllerInterfa
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $id, $group_id)
     {
+        
         $validated = $request->validate([
             'nome' => 'required|max:20'
         ]);
 
         try{
 
+            $validated['group_id'] = $group_id;
+
             $this->repository->create($validated);
 
             session()->flash('message', [
                 'success'   => 'true',
-                'message'   => $validated->nome . 'incluido com sucesso'
+                'message'   => 'incluido com sucesso'
             ]);
 
             return redirect()->back();
@@ -68,19 +75,20 @@ class DetalhesController extends Controller implements DetalhesControllerInterfa
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id, $group_id, $cat_id)
     {
+       
         $validated = $request->validate([
             'nome' => 'required|max:20'
         ]);
-
+        
         try{
 
-            $this->repository->update($validated, $id);
+            $this->repository->update($validated, $cat_id);
 
             session()->flash('message', [
                 'success'   => 'true',
-                'message'   => $validated->nome . 'incluido com sucesso'
+                'message'   => 'Item Atualizado com sucesso'
             ]);
 
             return redirect()->back();
@@ -106,12 +114,12 @@ class DetalhesController extends Controller implements DetalhesControllerInterfa
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy( $id, $group_id, $cat_id)
     {
         
         try{
 
-            $this->repository->Delete($id);
+            $this->repository->Delete($cat_id);
 
             session()->flash('message', [
                 'success'   => 'true',

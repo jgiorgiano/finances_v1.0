@@ -17,13 +17,13 @@
                         Pagamentos <span class="caret"></span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href={{ route('home') }}>
-                                Nova Conta
+                        <a class="dropdown-item" href={{ route('pagamentos.create', ['account' => Auth::id(), 'group' => '1']) }}>
+                                Nova Conta a Pagar
                         </a>
-                        <a class="dropdown-item" href={{ route('account.show', Auth::user()->id) }}>
+                        <a class="dropdown-item" href={{ route('pagamentos.index', ['account' => Auth::id(), 'group' => '1']) }}>
                                 Relatorio
                         </a>
-                        <a class="dropdown-item" href="{{ route('logout') }}">
+                        <a class="dropdown-item" href="{{ route('pagamentos.index', ['account' => Auth::id(), 'group' => '1']) }}">
                             Quitar conta
                         </a>
                     </div>
@@ -71,8 +71,8 @@
                         <a class="dropdown-item" href={{ route('categorias.index',[Auth::id(), 1]) }}>
                                 Categorias
                         </a>
-                        <a class="dropdown-item" href={{ route('centrocusto.index', [Auth::id(), 1]) }}>
-                                Centros de Custo
+                        <a class="dropdown-item" href={{ route('grupofinanceiro.index', [Auth::id(), 1]) }}>
+                                Grupos Financeiros
                         </a>
                         <a class="dropdown-item" href="{{ route('situacao.index',[Auth::id(), 1]) }}">
                                 Situacão de Conta

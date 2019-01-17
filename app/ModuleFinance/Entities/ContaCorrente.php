@@ -8,7 +8,7 @@ class ContaCorrente extends Model
 {
     protected $table = 'conta_corrente';
 
-    protected $fillable = ['nome'];
+    protected $fillable = ['nome', 'group_id'];
 
     public $timestamps = false;
 

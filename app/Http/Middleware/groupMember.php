@@ -15,7 +15,9 @@ class groupMember
      * @return mixed
      */
     public function handle($request, Closure $next)
+    
     {
+        //dd($request->group, member::hasGroups());
         if( in_array($request->group, member::hasGroups() )){            
             
             return $next($request);

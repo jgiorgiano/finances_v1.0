@@ -4,11 +4,11 @@ namespace App\ModuleFinance\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 
-class CentroCusto extends Model
+class GrupoFinanceiro extends Model
 {
-    protected $table = 'centro_custo';
+    protected $table = 'grupo_financeiro';
 
-    protected $fillable = ['nome'];
+    protected $fillable = ['nome', 'group_id'];
 
     public $timestamps = false;
 

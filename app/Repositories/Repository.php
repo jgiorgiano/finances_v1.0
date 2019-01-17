@@ -21,6 +21,13 @@ class Repository implements RepositoryInterface{
         return $this->model->all();
     }
 
+//get the instances of model which pertence to the group
+    public function allFromGroup($group_id)
+    {
+        
+        return $this->model->where('group_id', $group_id)->get();
+    }
+
 // create a new record in Database
     public function create(array $data)
     {
@@ -31,11 +38,12 @@ class Repository implements RepositoryInterface{
     public function update(array $data, $id)
     {
         $row = $this->model->findOrFail($id);
+        
         return $row->update($data);
     }
 
 // Delete a record in Database
-    public function Delete($id)
+    public function delete($id)
     {
         return $this->model->destroy($id);
     }

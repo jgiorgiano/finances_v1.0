@@ -8,10 +8,13 @@ use App\ModuleFinance\Entities\Categoria;
 
 class CategoriaController extends DetalhesController
 {
+
     
     public function __construct(Categoria $categoria)
     {        
         $this->repository = new CategoriaRepository($categoria);
+        $this->route = 'categorias';
+        $this->title = 'Gerenciar Categorias';
 
     }
 

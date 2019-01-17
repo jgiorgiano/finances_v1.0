@@ -8,7 +8,7 @@ class Situacao extends Model
 {
     protected $table = 'situacao';
 
-    protected $fillable = ['nome'];
+    protected $fillable = ['nome', 'group_id'];
 
     public $timestamps = false;
 

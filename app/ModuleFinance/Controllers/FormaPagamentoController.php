@@ -12,6 +12,8 @@ class FormaPagamentoController extends DetalhesController
     public function __construct(FormaPagamento $model)
     {        
         $this->repository = new FormaPagamentoRepository($model);
+        $this->route = 'formapagamento';
+        $this->title = 'Gerenciar Formas de Pagamento';
 
     }
 

@@ -22,7 +22,7 @@ Route::middleware(['auth', 'user'])->group(function(){
     Route::resource('account/{account}/address', 'AddressController');
 });
 
-Route::middleware(['auth', 'user', 'groupMember'])->group(function(){
+Route::middleware(['auth',  'user', 'groupMember'])->group(function(){
     Route::resource('account/{account}/group', 'GroupController');
     Route::post('account/{account}/group/{group}/invite', 'GroupController@invite')->name('group.invite');
     Route::DELETE('account/{account}/group/{group}/delete/{member}', 'GroupController@deleteMember')->name('group.deleteMember');
@@ -38,11 +38,11 @@ Route::middleware(['auth', 'user', 'groupMember'])->group(function(){
     });
 
     Route::resource('account/{account}/group/{group}/categorias',       '\App\ModuleFinance\Controllers\CategoriaController');
-    Route::resource('account/{account}/group/{group}/centrocusto',      '\App\ModuleFinance\Controllers\CentroCustoController');
     Route::resource('account/{account}/group/{group}/situacao',         '\App\ModuleFinance\Controllers\SituacaoController');
     Route::resource('account/{account}/group/{group}/formapagamento',   '\App\ModuleFinance\Controllers\FormaPagamentoController');
     Route::resource('account/{account}/group/{group}/contacorrente',    '\App\ModuleFinance\Controllers\ContaCorrenteController');
-
+    Route::resource('account/{account}/group/{group}/pagamentos',       '\App\ModuleFinance\Controllers\PagamentoController');
+    Route::resource('account/{account}/group/{group}/grupofinanceiro',  '\App\ModuleFinance\Controllers\GrupoFinanceiroController');
 
 
 });

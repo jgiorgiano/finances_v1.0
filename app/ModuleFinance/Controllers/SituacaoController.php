@@ -12,6 +12,8 @@ class SituacaoController extends DetalhesController
     public function __construct(Situacao $model)
     {        
         $this->repository = new SituacaoRepository($model);
+        $this->route = 'situacao';
+        $this->title = 'Gerenciar Situacoes da conta';
 
     }
 

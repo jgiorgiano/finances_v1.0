@@ -8,7 +8,7 @@ class FormaPagamento extends Model
 {
     protected $table = 'forma_pagamento';
 
-    protected $fillable = ['nome'];
+    protected $fillable = ['nome', 'group_id'];
 
     public $timestamps = false;
 
