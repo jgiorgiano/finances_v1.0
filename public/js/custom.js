@@ -30,10 +30,26 @@ $('#btn-newItem').on('click', function(e){
 
 $('#btnValue').on('click', function(e){
     e.preventDefault();
+    $('#parcelamento').empty();
     var valor = $('#total').val();
     var parcelas = $('#parcelas').val();
     var vencimento = $('#vencimento').val();
 
-    alert('valor' + valor + vencimento + parcelas);
+    var i;
+
+    for(i = parcelas; i >= 1; i--)
+    {
+        var valorParcela = valor/parcelas;
+        var vencimentoParcela = vencimento;     
+
+        $('#parcelamento').prepend('<div class="form-row" id="line"></div>');
+        $("#line").append('<div class="col-md-4" id="valuer"></div>');
+        $('#valuer').append('<input type="text" class="form-control p-1" id="total" value=' + valorParcela + '></input>')
+        $("#line").append('<div class="col-md-4" id="vencto"></div>')
+        $('#vencto').append('<input type="text" class="form-control p-1" id="total" value='+vencimentoParcela+'></input>')
+        $("#line").append('<div class="col-md-2" id="parcel" ></div>')
+        $('#parcel').append('<input type="text" class="form-control p-1" id="total" value=' + i +'></input>')
+    }
+
     
 })

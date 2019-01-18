@@ -37,7 +37,8 @@
                 <option value="{{$cats->id}}">{{$cats->nome}}</option>
                 @endforeach
             </select>
-        </div>         
+        </div>
+               
         <div>
             <label>Pagamento</label>
             <div class="form-row border p-2">
@@ -54,8 +55,18 @@
                      <button class="btn btn-light" id="btnValue">Add</button>
                  </div>
             </div>
-
         </div>
+        <div>
+            <table>
+                <tr>
+                    <td>Valor Parcela</td>
+                    <td>Vencimento</td>
+                    <td>Parcela</td>
+                </tr>
+                <tr id="parcelamento">
+                </tr>   
+            </table>    
+        </div>  
 
      
     </form>
