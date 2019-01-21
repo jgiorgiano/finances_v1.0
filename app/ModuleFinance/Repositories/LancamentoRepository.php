@@ -18,37 +18,35 @@ class LancamentoRepository extends Repository{
 
     public function getAllDetails($id)
     {
-        $categorias =   DB::table('categoria')->where('group_id', $id)->get();
-        $grupo =        DB::table('grupo_financeiro')->where('group_id', $id)->get();
-        $formaPgto =     DB::table('forma_pagamento')->where('group_id', $id)->get();
-        $contaCorrente= DB::table('conta_corrente')->where('group_id', $id)->get();
+        $categorias      =   DB::table('categoria')->where('group_id', $id)->get();
+        $grupoFinanceiro =   DB::table('grupo_financeiro')->where('group_id', $id)->get();
+        $formaPgto       =   DB::table('forma_pagamento')->where('group_id', $id)->get();
+        $contaCorrente   =   DB::table('conta_corrente')->where('group_id', $id)->get();
+        $group       =   DB::table('group')->where('id', $id)->first();
 
-        return ['categorias' => $categorias, 'grupos' => $grupo, 'formaPgto' => $formaPgto, 'contaCorrente' =>  $contaCorrente];
+        return ['categorias' => $categorias, 'grupoFinanceiro' => $grupoFinanceiro, 'formaPgto' => $formaPgto, 'contaCorrente' =>  $contaCorrente, 'group' => $group];
     }
 
-    public function novoLancamento($request)
+    public function novoLancamento($conta, $request)
     {
-        return DB::transaction(function () {
-           $lancamento =  DB::table('lancamento')
-           ->insert([
-               'categoria'       => $request['categoria_id'],
-               'grupo_financeiro'   => $request['centro_custo_id'],
-               'group'           => $request['group_id'],               
-               'nome'               => $request['nome'],
-               'tipo'               => $request['tipo'],
-               'data_emissao'       => $request['data_emissao'],
-               'numero_documento'   => $request['numero_documento'],
-               'created_at'         => $request['created_at'],
-           ]);
+        //dd($request['categoria']);
+        return DB::transaction(function ($conta) {
+            $lancamento =  DB::table('lancamento')
+            ->insert($conta);
+               
+               
+                foreach ($request['parcela'] as $data) {                   
 
-           DB::table('parcelamento')
-           ->insert([
-
-
-           ]);
-
-
-
+                    DB::table('parcelamento')
+                    ->insert([
+                            'conta_id'      => $lancamento->id,
+                            'situacao_id'   => $request['situacao_id'],
+                            'valor'         => $data['valor'],
+                            'vencimento'    => $data['vencimento'],
+                            'numero_parcial'=> $data['numero']
+                    ]);
+                }
+             
         });
 
 

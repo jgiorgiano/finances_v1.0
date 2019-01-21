@@ -4,7 +4,7 @@
 <nav class="navbar navbar-expand-md sticky-top navbar-light bg-light border border-white p-0 m-0 mb-3">
     <div class="container">
         <h6 class="lead text-secondary border-right border-secondary pr-2 my-auto">
-            {{ $title ?? 'Nome do Grupo' }}
+            {{ $groupName ?? 'Nome do Grupo' }}
         </h6>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarFinance" aria-controls="navbarFinance" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
             <span class="navbar-toggler-icon"></span>

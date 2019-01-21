@@ -36,6 +36,7 @@ class PagamentoController
        $data = $this->service->create($group_id);      
         
        return view('finance.lancamento.createLancamento', [
+           'group' => $data['group']->nome,
            'title'  => 'conta a pagar',
            'data' => $data
        ]);
@@ -48,10 +49,10 @@ class PagamentoController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(LancamentoRequest $request)
+    public function store(LancamentoRequest $request, $id, $group_id)
     {     
-
-        $data = $this->service->store($request->validated());
+       
+        $data = $this->service->store($request->validated(), $id, $group_id);
 
         session()->flash('success', [
             'success' => $data['success'],

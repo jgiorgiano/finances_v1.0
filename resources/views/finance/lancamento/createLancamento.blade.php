@@ -5,25 +5,33 @@
 <h5 class="h5">Nova {{$title}}</h5>
 <hr>
 <div class="col-md-6">
-    <form action="">
+    <form action="{{ route('pagamentos.store', ['account' => \Auth::id(), 'group_id'=> $data['group']->id])}}" method="POST">
+        @csrf
         <div class="form-group">
             <label>Nome Conta</label>
             <input type="text" class="form-control" name="nome">
+            @if($errors->any())
+                                    <span class="invalid-feedback" role="alert">
+                                        @foreach($errors->all() as $message)
+                                        <strong>{{ $message }}</strong>
+                                        @endforeach
+                                    </span>
+                                @endif
         </div>
         <div class="form-group">
                 <label>N Documento</label>
-                <input type="text" class="form-control" name="numero_documento">
+                <input type="text" class="form-control" id="nDoc" name="numeroDocumento">
         </div>
         <div class="form-group">
                 <label>Data emissao</label>
-                <input type="date" class="form-control" name="numero_documento">
+                <input type="date" class="form-control" name="dataEmissao">
         </div>        
         <div class="form-group"> 
             <label>Grupo Financeiro</label>           
             <select class="custom-select"
-                name="nomeGrupo" required>
+                name="grupoFinanceiro" required>
                 <option 'selected'>Choose...</option>
-                @foreach($data['grupos'] as $grupo)
+                @foreach($data['grupoFinanceiro'] as $grupo)
                 <option value="{{$grupo->id}}">{{$grupo->nome}}</option>
                 @endforeach
             </select>
@@ -31,7 +39,7 @@
         <div class="form-group"> 
             <label>Categoria</label>           
             <select class="custom-select"
-                name="nomeCategoria" required>
+                name="categoria" required>
                 <option 'selected'>Choose...</option>
                 @foreach($data['categorias'] as $cats)
                 <option value="{{$cats->id}}">{{$cats->nome}}</option>
@@ -46,7 +54,7 @@
                     <input type="text" class="form-control" id="total" placeholder="Valor Total">
                 </div>
                 <div class="col-md-4">
-                    <input type="text" class="form-control" id="vencimento" placeholder="Primeiro Vencimento">
+                    <input type="date" class="form-control" id="vencimento" placeholder="Primeiro Vencimento">
                 </div>
                  <div class="col-md-2">
                      <input type="text" class="form-control" id="parcelas" placeholder="parcelas">
@@ -68,7 +76,7 @@
             </table>    
         </div>  
 
-     
+     <button type="submit" class="btn btn-info">Adicionar</button>
     </form>
 </div>
 

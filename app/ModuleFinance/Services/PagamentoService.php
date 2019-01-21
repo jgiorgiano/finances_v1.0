@@ -26,15 +26,26 @@ class PagamentoService {
         return $this->repository->getAllDetails($group_id);
     }
 
-    public function store($request)
+    public function store($request, $user_id, $group_id)
     {
         try{
 
             $request['tipo']        = 1; // 1-Pagamentos e 2-Recebimento
             $request['situacao_id'] = 1; // 1 - em Aberto
-            $request['group_id']    = $request->group;
+            $request['group_id']    = $group_id;
 
-            $result = $this->repository->novoLancamento($request);
+            $conta = array(
+                'categoria'          => $request['categoria'],
+                'grupo_financeiro'   => $request['grupoFinanceiro'],
+                'group'              => $request['group_id'],               
+                'nome'               => $request['nome'],
+                'tipo'               => $request['tipo'],
+                'data_emissao'       => $request['dataEmissao'],
+                'numero_documento'   => $request['numeroDocumento'],
+                'created_at'         => date("Y-m-d H:i:s"),
+            );
+
+            $result = $this->repository->novoLancamento($conta, $request);
 
             return [
                 'success'   => true,

@@ -34,21 +34,33 @@ $('#btnValue').on('click', function(e){
     var valor = $('#total').val();
     var parcelas = $('#parcelas').val();
     var vencimento = $('#vencimento').val();
+    var nDoc = $('#nDoc').val();
+
+    function addMonth(date){
+        var vencto = new Date(date);
+       
+        vencto.setDate(vencto.getDate() + 30);
+        console.log(vencto);
+        return vencto;
+    }
+    
+    
 
     var i;
 
     for(i = parcelas; i >= 1; i--)
     {
         var valorParcela = valor/parcelas;
-        var vencimentoParcela = vencimento;     
+        var vencimentoParcela = vencimento;  
+        var nnDoc = nDoc + '/' + i;   
 
         $('#parcelamento').prepend('<div class="form-row" id="line"></div>');
         $("#line").append('<div class="col-md-4" id="valuer"></div>');
-        $('#valuer').append('<input type="text" class="form-control p-1" id="total" value=' + valorParcela + '></input>')
+        $('#valuer').append('<input type="text" class="form-control p-1" id="total" name="parcela['+ i +'][valor]" value=' + valorParcela + '></input>')
         $("#line").append('<div class="col-md-4" id="vencto"></div>')
-        $('#vencto').append('<input type="text" class="form-control p-1" id="total" value='+vencimentoParcela+'></input>')
+        $('#vencto').append('<input type="date" class="form-control p-1" id="total" name="parcela['+ i +'][vencimento]" value='+vencimentoParcela+'></input>')
         $("#line").append('<div class="col-md-2" id="parcel" ></div>')
-        $('#parcel').append('<input type="text" class="form-control p-1" id="total" value=' + i +'></input>')
+        $('#parcel').append('<input type="text" class="form-control p-1" id="total" name="parcela['+ i +'][numero]" value=' + nnDoc +'></input>')
     }
 
     

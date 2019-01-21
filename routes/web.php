@@ -33,9 +33,7 @@ Route::middleware(['auth',  'user', 'groupMember'])->group(function(){
 
 /* ROUTES FOR FINANCE MODULE */
 
-    Route::get('account/{account}/group/{group}/home', function(){
-        return view('finance.home');
-    });
+    Route::get('account/{account}/group/{group}/home', '\App\ModuleFinance\Controllers\HomeController@index');
 
     Route::resource('account/{account}/group/{group}/categorias',       '\App\ModuleFinance\Controllers\CategoriaController');
     Route::resource('account/{account}/group/{group}/situacao',         '\App\ModuleFinance\Controllers\SituacaoController');
