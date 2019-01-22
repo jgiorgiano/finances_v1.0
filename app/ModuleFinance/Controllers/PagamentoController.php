@@ -21,9 +21,14 @@ class PagamentoController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($user, $group_id)
     {
-        //
+        $pagamentos = $this->service->index($group_id);        
+
+        return view('finance.lancamento.relatorioIndex', [
+            'title' => 'Relatorio Geral de Contas a Pagar',
+            'movimentos' => $pagamentos,
+        ]);
     }
 
     /**

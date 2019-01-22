@@ -10,12 +10,10 @@ use Illuminate\Database\Eloquent\Model;
 class LancamentoRepository extends Repository{
 
     /**
-     * Retorna os detalhes para o lancamentos de uma conta(categoria, grupo Financeiro, forma pagamento e conta corrente)
-     * 
+     * Retorna os detalhes para o lancamentos de uma conta(categoria, grupo Financeiro, forma pagamento e conta corrente)     * 
      * @param group_id     * 
      * return Array
      */
-
     public function getAllDetails($id)
     {
         $categorias      =   DB::table('categoria')->where('group_id', $id)->get();
@@ -27,29 +25,69 @@ class LancamentoRepository extends Repository{
         return ['categorias' => $categorias, 'grupoFinanceiro' => $grupoFinanceiro, 'formaPgto' => $formaPgto, 'contaCorrente' =>  $contaCorrente, 'group' => $group];
     }
 
-    public function novoLancamento($conta, $request)
+    /**
+     * Persist data in the lancamento Table and insert their payments in the parcelas Table 
+     */
+    public function newMoviment($request)
     {
-        //dd($request['categoria']);
-        return DB::transaction(function ($conta) {
-            $lancamento =  DB::table('lancamento')
-            ->insert($conta);
-               
-               
-                foreach ($request['parcela'] as $data) {                   
-
-                    DB::table('parcelamento')
-                    ->insert([
-                            'conta_id'      => $lancamento->id,
-                            'situacao_id'   => $request['situacao_id'],
-                            'valor'         => $data['valor'],
-                            'vencimento'    => $data['vencimento'],
-                            'numero_parcial'=> $data['numero']
-                    ]);
-                }
-             
-        });
-
-
+        
+        $lancamento =  DB::table('lancamento')
+        ->insertGetId([
+            'categoria'          => $request['categoria'],
+            'grupo_financeiro'   => $request['grupoFinanceiro'],
+            'group'              => $request['group_id'],               
+            'nome'               => $request['nome'],
+            'tipo'               => $request['tipo'],
+            'data_emissao'       => $request['dataEmissao'],
+            'numero_documento'   => $request['numeroDocumento'],
+            'created_at'         => date("Y-m-d H:i:s"),
+        ]);        
+           
+        $parcelas = [];
+        foreach ($request['parcela'] as $data) {  
+            array_push( $parcelas, [
+                'lancamento_id'     => $lancamento,
+                'situacao_id'       => $request['situacao_id'],
+                'valor'             => $data['valor'],
+                'vencimento'        => $data['vencimento'],
+                'numero_parcial'    => $data['numero']
+            ]);
+        } 
+            
+        DB::table('parcelamento')
+        ->insert($parcelas);
     }
 
+    public function getAllMovimentsByType($group_id, $type)
+    {
+        return DB::table('lancamento')
+                ->select(
+                    'lancamento.id',
+                    'lancamento.nome',
+                    'lancamento.data_emissao',
+                    'lancamento.observacao',
+                    'lancamento.created_at',
+                    'categoria.nome as categoria',
+                    'grupo_financeiro.nome as grupo_financeiro',
+                    'parcelamento.valor',
+                    'parcelamento.vencimento',
+                    'parcelamento.numero_parcial',
+                    'parcelamento.observacao',
+                    'situacao.nome as situacao'
+                )
+                ->where([
+                    ['group',   '=', $group_id],
+                    ['tipo',    '=', $type]    
+                ])
+                ->leftJoin('parcelamento', 'lancamento.id', '=', 'parcelamento.lancamento_id')
+                ->join('categoria', 'lancamento.categoria', '=', 'categoria.id')
+                ->join('grupo_financeiro', 'lancamento.grupo_financeiro', '=', 'grupo_financeiro.id')
+                ->join('situacao', 'parcelamento.situacao_id', '=', 'situacao.id')
+                ->orderBy('parcelamento.vencimento', 'asc')
+                ->get();
+    }
+
+
+
+    
 }

@@ -16,6 +16,13 @@ class PagamentoService {
 
     }
 
+
+    public function index($group_id)
+    {
+        $type = 1;  //1-Pagamentos e 2-Recebimento
+
+        return $this->repository->getAllMovimentsByType($group_id, $type);
+    }
     /**
      * Get all the resources to build the create Lancamento.     * 
      * @param Group_Id     * 
@@ -34,18 +41,7 @@ class PagamentoService {
             $request['situacao_id'] = 1; // 1 - em Aberto
             $request['group_id']    = $group_id;
 
-            $conta = array(
-                'categoria'          => $request['categoria'],
-                'grupo_financeiro'   => $request['grupoFinanceiro'],
-                'group'              => $request['group_id'],               
-                'nome'               => $request['nome'],
-                'tipo'               => $request['tipo'],
-                'data_emissao'       => $request['dataEmissao'],
-                'numero_documento'   => $request['numeroDocumento'],
-                'created_at'         => date("Y-m-d H:i:s"),
-            );
-
-            $result = $this->repository->novoLancamento($conta, $request);
+            $result = $this->repository->newMoviment($request);
 
             return [
                 'success'   => true,

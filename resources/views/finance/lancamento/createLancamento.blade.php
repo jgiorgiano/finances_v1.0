@@ -2,21 +2,21 @@
 
 @section('content')
 
-<h5 class="h5">Nova {{$title}}</h5>
+<h5 class="h5 text-center">Nova {{$title}}</h5>
 <hr>
-<div class="col-md-6">
+<div class="col-lg-6 col-md-8 offset-md-2 offset-lg-3">
     <form action="{{ route('pagamentos.store', ['account' => \Auth::id(), 'group_id'=> $data['group']->id])}}" method="POST">
         @csrf
         <div class="form-group">
             <label>Nome Conta</label>
             <input type="text" class="form-control" name="nome">
             @if($errors->any())
-                                    <span class="invalid-feedback" role="alert">
-                                        @foreach($errors->all() as $message)
-                                        <strong>{{ $message }}</strong>
-                                        @endforeach
-                                    </span>
-                                @endif
+                <span class="invalid-feedback" role="alert">
+                    @foreach($errors->all() as $message)
+                    <strong>{{ $message }}</strong>
+                    @endforeach
+                </span>
+            @endif
         </div>
         <div class="form-group">
                 <label>N Documento</label>
@@ -50,33 +50,28 @@
         <div>
             <label>Pagamento</label>
             <div class="form-row border p-2">
-                <div class="col-md-4">
+                <div class="col-md-4 py-1">
                     <input type="text" class="form-control" id="total" placeholder="Valor Total">
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 py-1">
                     <input type="date" class="form-control" id="vencimento" placeholder="Primeiro Vencimento">
                 </div>
-                 <div class="col-md-2">
+                 <div class="col-md-2 py-1">
                      <input type="text" class="form-control" id="parcelas" placeholder="parcelas">
                  </div>
-                 <div class="col-md-2">
+                 <div class="col-md-2 py-1">
                      <button class="btn btn-light" id="btnValue">Add</button>
                  </div>
             </div>
         </div>
         <div>
-            <table>
-                <tr>
-                    <td>Valor Parcela</td>
-                    <td>Vencimento</td>
-                    <td>Parcela</td>
-                </tr>
-                <tr id="parcelamento">
+            <table class="border my-3">               
+                <tr id="parcelamento" >
                 </tr>   
             </table>    
         </div>  
 
-     <button type="submit" class="btn btn-info">Adicionar</button>
+     <button type="submit" class="btn btn-info float-right">Adicionar</button>
     </form>
 </div>
 
