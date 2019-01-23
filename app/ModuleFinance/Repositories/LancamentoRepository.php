@@ -20,7 +20,7 @@ class LancamentoRepository extends Repository{
         $grupoFinanceiro =   DB::table('grupo_financeiro')->where('group_id', $id)->get();
         $formaPgto       =   DB::table('forma_pagamento')->where('group_id', $id)->get();
         $contaCorrente   =   DB::table('conta_corrente')->where('group_id', $id)->get();
-        $group       =   DB::table('group')->where('id', $id)->first();
+        $group           =   DB::table('group')->where('id', $id)->first();
 
         return ['categorias' => $categorias, 'grupoFinanceiro' => $grupoFinanceiro, 'formaPgto' => $formaPgto, 'contaCorrente' =>  $contaCorrente, 'group' => $group];
     }
@@ -47,7 +47,6 @@ class LancamentoRepository extends Repository{
         foreach ($request['parcela'] as $data) {  
             array_push( $parcelas, [
                 'lancamento_id'     => $lancamento,
-                'situacao_id'       => $request['situacao_id'],
                 'valor'             => $data['valor'],
                 'vencimento'        => $data['vencimento'],
                 'numero_parcial'    => $data['numero']
@@ -72,8 +71,7 @@ class LancamentoRepository extends Repository{
                     'parcelamento.valor',
                     'parcelamento.vencimento',
                     'parcelamento.numero_parcial',
-                    'parcelamento.observacao',
-                    'situacao.nome as situacao'
+                    'parcelamento.observacao as obsParcela'
                 )
                 ->where([
                     ['group',   '=', $group_id],
@@ -81,8 +79,7 @@ class LancamentoRepository extends Repository{
                 ])
                 ->leftJoin('parcelamento', 'lancamento.id', '=', 'parcelamento.lancamento_id')
                 ->join('categoria', 'lancamento.categoria', '=', 'categoria.id')
-                ->join('grupo_financeiro', 'lancamento.grupo_financeiro', '=', 'grupo_financeiro.id')
-                ->join('situacao', 'parcelamento.situacao_id', '=', 'situacao.id')
+                ->join('grupo_financeiro', 'lancamento.grupo_financeiro', '=', 'grupo_financeiro.id')                
                 ->orderBy('parcelamento.vencimento', 'asc')
                 ->get();
     }

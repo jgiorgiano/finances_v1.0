@@ -5,6 +5,8 @@
 
 You Are logged in!!
 
+
+
 @foreach($groups as $group)
 
 @empty($group->accepted_at)    

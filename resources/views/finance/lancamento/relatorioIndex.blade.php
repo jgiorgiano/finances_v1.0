@@ -31,8 +31,13 @@
             <td>{{ $mt->grupo_financeiro}}</td>
             <td>{{ $mt->created_at}}</td>
             <td>{{ $mt->data_emissao}}</td>
-            <td>{{ $mt->situacao}}</td>
-            <td><button class="btn btn-sm btn-light">Gerenciar</button></td>                
+            <td></td>
+            <td>
+                <button class="btn btn-sm btn-light">Gerenciar</button>
+                @if($mt->observacao != null || $mt->obsParcela != null) 
+                  <span class="badge badge-pill badge-info">obs</span>
+                @endif            
+            </td>                
           </tr>
         @endforeach              
         </tbody>

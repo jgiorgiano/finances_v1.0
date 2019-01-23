@@ -1,6 +1,6 @@
 <?php
 
-namespace App\ModuleFinance;
+namespace App\ModuleFinance\Services;
 
 use App\ModuleFinance\Repositories\ParcelamentoRepository;
 use App\ModuleFinance\Entities\Parcelamento;

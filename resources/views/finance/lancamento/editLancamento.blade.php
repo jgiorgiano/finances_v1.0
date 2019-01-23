@@ -2,11 +2,12 @@
 
 @section('content')
 
-<h5 class="h5 text-center">Nova {{$title}}</h5>
+<h5 class="h5 text-center">Editar {{$title}} </h5>
 <hr>
 <div class="col-lg-6 col-md-8 offset-md-2 offset-lg-3">
-    <form action={{ route($route . '.store', ['account' => \Auth::id(), 'group_id'=> $data['group']->id])}} method="POST">
+    <form action={{ route($route . '.update', ['account' => \Auth::id(), 'group_id'=> $data['group']->id, 'lancamento_id' => ])}} method="POST">
         @csrf
+        @method('PUT')
         <div class="form-group">
             <label>Nome Conta</label>
             <input type="text" class="form-control" name="nome">

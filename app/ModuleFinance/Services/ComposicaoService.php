@@ -1,6 +1,6 @@
 <?php
 
-namespace App\ModuleFinance;
+namespace App\ModuleFinanc\Services;
 
 use App\ModuleFinance\Repositories\ComposicaoRepository;
 use App\ModuleFinance\Entities\Composicao;

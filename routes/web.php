@@ -36,12 +36,12 @@ Route::middleware(['auth',  'user', 'groupMember'])->group(function(){
     Route::get('account/{account}/group/{group}/home', '\App\ModuleFinance\Controllers\HomeController@index');
 
     Route::resource('account/{account}/group/{group}/categorias',       '\App\ModuleFinance\Controllers\CategoriaController');
-    Route::resource('account/{account}/group/{group}/situacao',         '\App\ModuleFinance\Controllers\SituacaoController');
+   // Route::resource('account/{account}/group/{group}/situacao',         '\App\ModuleFinance\Controllers\SituacaoController');
     Route::resource('account/{account}/group/{group}/formapagamento',   '\App\ModuleFinance\Controllers\FormaPagamentoController');
     Route::resource('account/{account}/group/{group}/contacorrente',    '\App\ModuleFinance\Controllers\ContaCorrenteController');
-    Route::resource('account/{account}/group/{group}/pagamentos',       '\App\ModuleFinance\Controllers\PagamentoController');
     Route::resource('account/{account}/group/{group}/grupofinanceiro',  '\App\ModuleFinance\Controllers\GrupoFinanceiroController');
-
+    Route::resource('account/{account}/group/{group}/pagamentos',       '\App\ModuleFinance\Controllers\PagamentoController');
+    Route::resource('account/{account}/group/{group}/recebimentos',     '\App\ModuleFinance\Controllers\RecebimentoController');
 
 });
 

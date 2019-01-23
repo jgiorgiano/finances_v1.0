@@ -4,7 +4,7 @@
 <nav class="navbar navbar-expand-md sticky-top navbar-light bg-light border border-white p-0 m-0 mb-3">
     <div class="container">
         <h6 class="lead text-secondary border-right border-secondary pr-2 my-auto">
-            {{ $groupName ?? 'Nome do Grupo' }}
+            {{ $group->nome ?? 'Nome do Grupo' }}
         </h6>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarFinance" aria-controls="navbarFinance" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
             <span class="navbar-toggler-icon"></span>
@@ -17,13 +17,13 @@
                         Pagamentos <span class="caret"></span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href={{ route('pagamentos.create', ['account' => Auth::id(), 'group' => '1']) }}>
+                        <a class="dropdown-item" href={{ route('pagamentos.create', ['account' => Auth::id(), 'group' => $group->id]) }}>
                                 Nova Conta a Pagar
                         </a>
-                        <a class="dropdown-item" href={{ route('pagamentos.index', ['account' => Auth::id(), 'group' => '1']) }}>
+                        <a class="dropdown-item" href={{ route('pagamentos.index', ['account' => Auth::id(), 'group' => $group->id]) }}>
                                 Relatorio
                         </a>
-                        <a class="dropdown-item" href="{{ route('pagamentos.index', ['account' => Auth::id(), 'group' => '1']) }}">
+                        <a class="dropdown-item" href="{{ route('pagamentos.index', ['account' => Auth::id(), 'group' => $group->id]) }}">
                             Quitar conta
                         </a>
                     </div>
@@ -34,14 +34,14 @@
                         Recebimentos <span class="caret"></span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href={{ route('home') }}>
-                                Nova Conta
+                        <a class="dropdown-item" href={{ route('recebimentos.create', ['account' => Auth::id(), 'group' => $group->id]) }}>
+                                Nova Conta a Receber
                         </a>
-                        <a class="dropdown-item" href={{ route('account.show', Auth::user()->id) }}>
+                        <a class="dropdown-item" href={{ route('recebimentos.index', ['account' => Auth::id(), 'group' => $group->id]) }}>
                                 Relatorio
                         </a>
-                        <a class="dropdown-item" href="{{ route('logout') }}">
-                            Quitar conta
+                        <a class="dropdown-item" href={{ route('recebimentos.index', ['account' => Auth::id(), 'group' => $group->id]) }}>
+                                Quitar conta
                         </a>
                     </div>
                 </li>
@@ -68,19 +68,19 @@
                         Configuracões <span class="caret"></span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href={{ route('categorias.index',[Auth::id(), 1]) }}>
+                        <a class="dropdown-item" href={{ route('categorias.index',[Auth::id(), $group->id]) }}>
                                 Categorias
                         </a>
-                        <a class="dropdown-item" href={{ route('grupofinanceiro.index', [Auth::id(), 1]) }}>
+                        <a class="dropdown-item" href={{ route('grupofinanceiro.index', [Auth::id(), $group->id]) }}>
                                 Grupos Financeiros
                         </a>
-                        <a class="dropdown-item" href="{{ route('situacao.index',[Auth::id(), 1]) }}">
+                      {{--    <a class="dropdown-item" href="{{ route('situacao.index',[Auth::id(), 1]) }}">
                                 Situacão de Conta
-                        </a>
-                        <a class="dropdown-item" href="{{ route('contacorrente.index',[Auth::id(), 1]) }}">
+                        </a>  --}}
+                        <a class="dropdown-item" href="{{ route('contacorrente.index',[Auth::id(), $group->id]) }}">
                                 Contas Corrente
                         </a>
-                        <a class="dropdown-item" href="{{ route('formapagamento.index',[Auth::id(), 1]) }}">
+                        <a class="dropdown-item" href="{{ route('formapagamento.index',[Auth::id(), $group->id]) }}">
                                 Formas de Pagamentos
                         </a>
 

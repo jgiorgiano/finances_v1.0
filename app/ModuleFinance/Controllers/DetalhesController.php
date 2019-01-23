@@ -4,9 +4,8 @@ namespace App\ModuleFinance\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\ModuleFinance\Controllers\DetalhesControllerInterface;
 
-class DetalhesController extends Controller implements DetalhesControllerInterface
+class DetalhesController extends Controller
 {
    
   

@@ -1,17 +1,13 @@
 <?php
 
-namespace App\ModuleFinance;
+namespace App\ModuleFinance\Services;
 
 use App\ModuleFinance\Repositories\LancamentoRepository;
 use App\ModuleFinance\Entities\Lancamento;
 
-class RecebimentoService {
 
-    protected $repository;
+class RecebimentoService extends AbstractLancamentoService{
 
-    public function __construct(Lancamento $model)
-    {
-        $this->repository   = new LancamentoRepository($model);
-
-    }
+   protected $type = 2; // 1 - pagamento // 2 - Recebimentos
+   
 }

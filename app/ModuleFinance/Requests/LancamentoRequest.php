@@ -28,8 +28,7 @@ class LancamentoRequest extends FormRequest
             'grupoFinanceiro'  => 'required|integer',                      
             'nome'              => 'required',            
             'dataEmissao'      => 'required|date',
-            'numeroDocumento'  => 'required', 
-            //'conta_corrente'    => 'required|integer',           
+            'numeroDocumento'  => 'required',                        
             
             //parcelamento
             'parcela.*.valor'             => 'required|numeric',

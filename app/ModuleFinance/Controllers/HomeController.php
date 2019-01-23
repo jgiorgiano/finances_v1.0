@@ -9,9 +9,9 @@ class HomeController
 
     public function index($id, $group_id){
 
-        $groupName = \App\Group::find($group_id)->nome;
+        $group = \App\Group::find($group_id);        
 
-        return view('finance.home',['groupName' => $groupName]);
+        return view('finance.home',['group' => $group]);
 
     }
 }
