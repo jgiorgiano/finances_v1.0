@@ -24,16 +24,18 @@ class LancamentoRequest extends FormRequest
     public function rules()
     {
         return [
-            'categoria'      => 'required|integer',
-            'grupoFinanceiro'  => 'required|integer',                      
+            'categoria'         => 'required|integer',
+            'grupoFinanceiro'   => 'required|integer',                      
             'nome'              => 'required',            
-            'dataEmissao'      => 'required|date',
-            'numeroDocumento'  => 'required',                        
+            'dataEmissao'       => 'required|date',
+            'numeroDocumento'   => 'required',    
+            'observacao'        => 'string',                    
             
             //parcelamento
             'parcela.*.valor'             => 'required|numeric',
             'parcela.*.vencimento'        => 'required|date',
             'parcela.*.numero'            => 'required',
+            'parcela.*.observacao'        => 'string',                
         ];
     }
 }

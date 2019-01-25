@@ -2,15 +2,15 @@
 
 @section('content')
 
-<h5 class="h5 text-center">Editar {{$title}} </h5>
+<h5 class="h5 text-center">Editar {{$lancamento->nome}} </h5>
 <hr>
 <div class="col-lg-6 col-md-8 offset-md-2 offset-lg-3">
-    <form action={{ route($route . '.update', ['account' => \Auth::id(), 'group_id'=> $data['group']->id, 'lancamento_id' => ])}} method="POST">
+    <form action={{ route(Request::segment(5) . '.update', ['account' => \Auth::id(), 'group_id'=> Request::segment(4), 'lancamento' => $lancamento->id])}} method="POST">
         @csrf
         @method('PUT')
         <div class="form-group">
             <label>Nome Conta</label>
-            <input type="text" class="form-control" name="nome">
+            <input type="text" class="form-control" name="nome" value={{$lancamento->nome}}>
             @if($errors->any())
                 <span class="invalid-feedback" role="alert">
                     @foreach($errors->all() as $message)
@@ -21,19 +21,19 @@
         </div>
         <div class="form-group">
                 <label>N Documento</label>
-                <input type="text" class="form-control" id="nDoc" name="numeroDocumento">
+                <input type="text" class="form-control" id="nDoc" name="numeroDocumento" value={{$lancamento->numero_documento}}>
         </div>
         <div class="form-group">
                 <label>Data emissao</label>
-                <input type="date" class="form-control" name="dataEmissao">
+                <input type="date" class="form-control" name="dataEmissao" value={{$lancamento->data_emissao}}>
         </div>        
         <div class="form-group"> 
             <label>Grupo Financeiro</label>           
             <select class="custom-select"
                 name="grupoFinanceiro" required>
                 <option 'selected'>Choose...</option>
-                @foreach($data['grupoFinanceiro'] as $grupo)
-                <option value="{{$grupo->id}}">{{$grupo->nome}}</option>
+                @foreach($data['grupoFinanceiro'] as $grupoFin)
+                <option value="{{$grupoFin->id}}" {{$grupoFin->id == $lancamento->grupo_financeiro ? 'selected' : ''}}>{{$grupoFin->nome}}</option>
                 @endforeach
             </select>
         </div>
@@ -43,13 +43,17 @@
                 name="categoria" required>
                 <option 'selected'>Choose...</option>
                 @foreach($data['categorias'] as $cats)
-                <option value="{{$cats->id}}">{{$cats->nome}}</option>
+                <option value="{{$cats->id}}" {{$cats->id == $lancamento->categoria ? 'selected' : ''}} >{{$cats->nome}}</option>
                 @endforeach
             </select>
         </div>
                
         <div>
             <label>Pagamento</label>
+            @foreach($lancamento->)
+
+
+
             <div class="form-row border p-2">
                 <div class="col-md-4 py-1">
                     <input type="text" class="form-control" id="total" placeholder="Valor Total">
@@ -70,6 +74,10 @@
                 <tr id="parcelamento" >
                 </tr>   
             </table>    
+        </div>
+        <div class="form-group">
+                <label>Observacão</label>
+                <input type="text" name="observacao" value="$lancamento->observacao" class="form-control" placeholder="Digite aqui uma observacao para a conta">
         </div>  
 
      <button type="submit" class="btn btn-info float-right">Adicionar</button>

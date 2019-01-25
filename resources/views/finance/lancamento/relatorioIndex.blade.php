@@ -23,7 +23,7 @@
         <tbody>
         @foreach($movimentos as $mt)
           <tr>               
-            <td>{{ $mt->id}}</td>
+            <td>{{ $mt->nome}}</td>
             <td>R$ {{ $mt->valor}}</td>
             <td>{{ $mt->vencimento}}</td>
             <td>{{ $mt->numero_parcial}}</td>
@@ -33,10 +33,13 @@
             <td>{{ $mt->data_emissao}}</td>
             <td></td>
             <td>
-                <button class="btn btn-sm btn-light">Gerenciar</button>
+                <a href={{ route(Request::segment(5) . '.edit', ['account' => Request::segment(2), 'group' => Request::segment(4), 'lancamento' => $mt->id])}} class="btn btn-sm btn-light">Gerenciar</a>
                 @if($mt->observacao != null || $mt->obsParcela != null) 
                   <span class="badge badge-pill badge-info">obs</span>
-                @endif            
+                @endif
+                @if($mt->path != null) 
+                <span class="badge badge-pill badge-info">&#128206</span>
+                @endif         
             </td>                
           </tr>
         @endforeach              

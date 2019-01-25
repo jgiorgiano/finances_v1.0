@@ -40,6 +40,7 @@ class LancamentoRepository extends Repository{
             'tipo'               => $request['tipo'],
             'data_emissao'       => $request['dataEmissao'],
             'numero_documento'   => $request['numeroDocumento'],
+            'observacao'         => $request['observacao'],
             'created_at'         => date("Y-m-d H:i:s"),
         ]);        
            
@@ -49,7 +50,8 @@ class LancamentoRepository extends Repository{
                 'lancamento_id'     => $lancamento,
                 'valor'             => $data['valor'],
                 'vencimento'        => $data['vencimento'],
-                'numero_parcial'    => $data['numero']
+                'numero_parcial'    => $data['numero'],
+                'observacao'        => $data['observacao'],
             ]);
         } 
             
@@ -71,20 +73,19 @@ class LancamentoRepository extends Repository{
                     'parcelamento.valor',
                     'parcelamento.vencimento',
                     'parcelamento.numero_parcial',
-                    'parcelamento.observacao as obsParcela'
+                    'parcelamento.observacao as obsParcela',
+                    'anexo.path' 
                 )
                 ->where([
                     ['group',   '=', $group_id],
                     ['tipo',    '=', $type]    
                 ])
                 ->leftJoin('parcelamento', 'lancamento.id', '=', 'parcelamento.lancamento_id')
+                ->leftjoin('anexo', 'lancamento.id', '=', 'anexo.lancamento_id')
                 ->join('categoria', 'lancamento.categoria', '=', 'categoria.id')
                 ->join('grupo_financeiro', 'lancamento.grupo_financeiro', '=', 'grupo_financeiro.id')                
                 ->orderBy('parcelamento.vencimento', 'asc')
                 ->get();
     }
-
-
-
     
 }

@@ -3,7 +3,7 @@
 @section('content')
 
 
-{{var_dump($_SERVER['PHP_SELF'])}}
+{{var_dump(Request::segment(4))}}
 
 
 @endsection

@@ -17,13 +17,13 @@
                         Pagamentos <span class="caret"></span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href={{ route('pagamentos.create', ['account' => Auth::id(), 'group' => $group->id]) }}>
+                        <a class="dropdown-item" href={{ route('pagamentos.create', ['account' => Request::segment(2), 'group' => Request::segment(4)]) }}>
                                 Nova Conta a Pagar
                         </a>
-                        <a class="dropdown-item" href={{ route('pagamentos.index', ['account' => Auth::id(), 'group' => $group->id]) }}>
+                        <a class="dropdown-item" href={{ route('pagamentos.index', ['account' => Request::segment(2), 'group' => Request::segment(4)]) }}>
                                 Relatorio
                         </a>
-                        <a class="dropdown-item" href="{{ route('pagamentos.index', ['account' => Auth::id(), 'group' => $group->id]) }}">
+                        <a class="dropdown-item" href={{ route('pagamentos.index', ['account' => Request::segment(2), 'group' => Request::segment(4)]) }}>
                             Quitar conta
                         </a>
                     </div>
@@ -34,13 +34,13 @@
                         Recebimentos <span class="caret"></span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href={{ route('recebimentos.create', ['account' => Auth::id(), 'group' => $group->id]) }}>
+                        <a class="dropdown-item" href={{ route('recebimentos.create', ['account' => Request::segment(2), 'group' => Request::segment(4)]) }}>
                                 Nova Conta a Receber
                         </a>
-                        <a class="dropdown-item" href={{ route('recebimentos.index', ['account' => Auth::id(), 'group' => $group->id]) }}>
+                        <a class="dropdown-item" href={{ route('recebimentos.index', ['account' => Request::segment(2), 'group' => Request::segment(4)]) }}>
                                 Relatorio
                         </a>
-                        <a class="dropdown-item" href={{ route('recebimentos.index', ['account' => Auth::id(), 'group' => $group->id]) }}>
+                        <a class="dropdown-item" href={{ route('recebimentos.index', ['account' => Request::segment(2), 'group' => Request::segment(4)]) }}>
                                 Quitar conta
                         </a>
                     </div>
@@ -54,7 +54,7 @@
                         <a class="dropdown-item" href={{ route('home') }}>
                                 Nova Conta
                         </a>
-                        <a class="dropdown-item" href={{ route('account.show', Auth::user()->id) }}>
+                        <a class="dropdown-item" href={{ route('account.show', Request::segment(2)) }}>
                                 Relatorio
                         </a>
                         <a class="dropdown-item" href="{{ route('logout') }}">
@@ -68,19 +68,19 @@
                         Configuracões <span class="caret"></span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href={{ route('categorias.index',[Auth::id(), $group->id]) }}>
+                        <a class="dropdown-item" href={{ route('categorias.index',['account' => Request::segment(2), 'group' => Request::segment(4)]) }}>
                                 Categorias
                         </a>
-                        <a class="dropdown-item" href={{ route('grupofinanceiro.index', [Auth::id(), $group->id]) }}>
+                        <a class="dropdown-item" href={{ route('grupofinanceiro.index', ['account' => Request::segment(2), 'group' => Request::segment(4)]) }}>
                                 Grupos Financeiros
                         </a>
                       {{--    <a class="dropdown-item" href="{{ route('situacao.index',[Auth::id(), 1]) }}">
                                 Situacão de Conta
                         </a>  --}}
-                        <a class="dropdown-item" href="{{ route('contacorrente.index',[Auth::id(), $group->id]) }}">
+                        <a class="dropdown-item" href="{{ route('contacorrente.index',['account' => Request::segment(2), 'group' => Request::segment(4)]) }}">
                                 Contas Corrente
                         </a>
-                        <a class="dropdown-item" href="{{ route('formapagamento.index',[Auth::id(), $group->id]) }}">
+                        <a class="dropdown-item" href="{{ route('formapagamento.index',['account' => Request::segment(2), 'group' => Request::segment(4)]) }}">
                                 Formas de Pagamentos
                         </a>
 

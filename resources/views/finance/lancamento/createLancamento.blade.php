@@ -5,7 +5,7 @@
 <h5 class="h5 text-center">Nova {{$title}}</h5>
 <hr>
 <div class="col-lg-6 col-md-8 offset-md-2 offset-lg-3">
-    <form action={{ route($route . '.store', ['account' => \Auth::id(), 'group_id'=> $data['group']->id])}} method="POST">
+    <form action={{ route(Request::segment(5) . '.store', ['account' => Request::segment(2), 'group' => Request::segment(4)])}} method="POST">
         @csrf
         <div class="form-group">
             <label>Nome Conta</label>
@@ -65,11 +65,15 @@
             </div>
         </div>
         <div>
-            <table class="border my-3">               
+            <table class="border my-1">               
                 <tr id="parcelamento" >
                 </tr>   
             </table>    
-        </div>  
+        </div> 
+        <div class="form-group">
+            <label>Observacão</label>
+            <input type="text" name="observacao" class="form-control" placeholder="Digite aqui uma observacao para a conta">
+        </div>
 
      <button type="submit" class="btn btn-info float-right">Adicionar</button>
     </form>

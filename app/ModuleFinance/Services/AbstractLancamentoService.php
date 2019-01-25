@@ -33,14 +33,15 @@ class AbstractLancamentoService {
         return $this->repository->getAllDetails($group_id);
     }
 
+    /**
+     * Persist data into the DB
+     * 
+     */
     public function store($request, $user_id, $group_id)
     {
-        
-
         try{
 
-            $request['tipo']        = $this->type;
-            $request['situacao_id'] = 1; // 1 - em Aberto
+            $request['tipo']        = $this->type;            
             $request['group_id']    = $group_id;
 
             $result = $this->repository->newMoviment($request);
@@ -94,12 +95,14 @@ class AbstractLancamentoService {
      * @param $id
      * @return Array 
      */
-    public function edit($id)
+    public function edit($group_id, $lancamento_id)
     {
-       $conta = $this->repository->show($id);
-       $data    = $this->create($request->group);
-       
-       return [$conta, $data];
+
+       $lancamento  = $this->repository->getLancamentoAndAnexo($lancamento_id);
+       $details     = $this->create($group_id);
+
+       return ['lancamento' => $lancamento, 'details' => $details];
+     
     }
 
 

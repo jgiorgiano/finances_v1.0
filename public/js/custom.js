@@ -55,12 +55,14 @@ $('#btnValue').on('click', function(e){
         var nnDoc = nDoc + '/' + i;   
 
         $('#parcelamento').prepend('<div class="form-row p-2" id="line"></div>');
-        $("#line").append('<div class="col-md-4 py-1" id="valuer"></div>');
+        $("#line").append('<div class="col-md-3 py-1" id="valuer"></div>');
         $('#valuer').append('<input type="text" class="form-control" id="total" name="parcela['+ i +'][valor]" value=' + valorParcela + '></input>')
-        $("#line").append('<div class="col-md-4 py-1" id="vencto"></div>')
+        $("#line").append('<div class="col-md-3 py-1" id="vencto"></div>')
         $('#vencto').append('<input type="date" class="form-control" id="total" name="parcela['+ i +'][vencimento]" value='+vencimentoParcela+'></input>')
         $("#line").append('<div class="col-md-2 py-1" id="parcel" ></div>')
         $('#parcel').append('<input type="text" class="form-control" id="total" name="parcela['+ i +'][numero]" value=' + nnDoc +'></input>')
+        $("#line").append('<div class="col-md-3 py-1" id="obs" ></div>')
+        $('#obs').append('<input type="text" class="form-control" id="observacao" name="parcela['+ i +'][observacao]" placeholder="Obs." ></input>')
     }
 
     
