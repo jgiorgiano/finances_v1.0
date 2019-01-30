@@ -98,10 +98,15 @@ class AbstractLancamentoService {
     public function edit($group_id, $lancamento_id)
     {
 
-       $lancamento  = $this->repository->getLancamentoAndAnexo($lancamento_id);
-       $details     = $this->create($group_id);
+        $details     = $this->repository->getAllDetails($group_id);
+        $lancamento  = $this->repository->getMovimentById($lancamento_id);
+        $parcelas    = $this->repository->getParcelasByLancamentoId($lancamento_id);
+        $anexos      = $this->repository->getAnexosByLancamentoId($lancamento_id);
 
-       return ['lancamento' => $lancamento, 'details' => $details];
+       return ['lancamento' => $lancamento, 
+                'details' => $details, 
+                'parcelas' => $parcelas, 
+                'anexos' => $anexos];
      
     }
 
@@ -111,11 +116,11 @@ class AbstractLancamentoService {
      * @param $request, $id
      * @return resource
      */
-    public function update($request, $id)
+    public function update($request, $lancamento_id)
     {
         try{
 
-            $result = $this->repository->update($request, $id);
+            $result = $this->repository->updateLancamentoAndParcelas($request, $lancamento_id);
 
             return [
                 'success'   => true,

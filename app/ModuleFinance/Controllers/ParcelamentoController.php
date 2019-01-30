@@ -42,8 +42,11 @@ class ParcelamentoController
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        //
+    {     
+        
+        $this->service->store($request);
+
+        return redirect()->back();
     }
 
     /**

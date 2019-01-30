@@ -14,4 +14,28 @@ class ParcelamentoService {
         $this->repository   = new ParcelamentoRepository($model);
 
     }
+
+    public function store($request)
+    {        
+        try{
+
+            $data = $this->repository->newParcelas($request->all(), $request->lancamento);
+
+            return [
+                'success' => true,
+                'message' => "parcelas Adicionadas com sucesso",
+                'data'  => $data
+            ];
+        }
+        catch(Exception $e)
+        {
+            return [
+                'success' => false,
+                'message' => "Houve um erro",
+                'data'  => null
+            ];
+
+        }
+
+    }
 }

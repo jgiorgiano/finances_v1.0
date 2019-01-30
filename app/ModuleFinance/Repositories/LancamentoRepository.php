@@ -6,9 +6,10 @@ namespace App\ModuleFinance\Repositories;
 use App\Repositories\Repository;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
+use App\Repositories\ParcelamentoRepository;
 
 class LancamentoRepository extends Repository{
-
+    
     /**
      * Retorna os detalhes para o lancamentos de uma conta(categoria, grupo Financeiro, forma pagamento e conta corrente)     * 
      * @param group_id     * 
@@ -31,7 +32,7 @@ class LancamentoRepository extends Repository{
     public function newMoviment($request)
     {
         
-        $lancamento =  DB::table('lancamento')
+        $lancamento_id =  DB::table('lancamento')
         ->insertGetId([
             'categoria'          => $request['categoria'],
             'grupo_financeiro'   => $request['grupoFinanceiro'],
@@ -42,12 +43,13 @@ class LancamentoRepository extends Repository{
             'numero_documento'   => $request['numeroDocumento'],
             'observacao'         => $request['observacao'],
             'created_at'         => date("Y-m-d H:i:s"),
-        ]);        
-           
+        ]);    
+        
+        //mudar para acionar classe no parcelamento repository->newParcelas           
         $parcelas = [];
         foreach ($request['parcela'] as $data) {  
             array_push( $parcelas, [
-                'lancamento_id'     => $lancamento,
+                'lancamento_id'     => $lancamento_id,
                 'valor'             => $data['valor'],
                 'vencimento'        => $data['vencimento'],
                 'numero_parcial'    => $data['numero'],
@@ -69,7 +71,7 @@ class LancamentoRepository extends Repository{
                     'lancamento.observacao',
                     'lancamento.created_at',
                     'categoria.nome as categoria',
-                    'grupo_financeiro.nome as grupo_financeiro',
+                    'grupo_financeiro.nome as grupo_financeiro',                   
                     'parcelamento.valor',
                     'parcelamento.vencimento',
                     'parcelamento.numero_parcial',
@@ -86,6 +88,66 @@ class LancamentoRepository extends Repository{
                 ->join('grupo_financeiro', 'lancamento.grupo_financeiro', '=', 'grupo_financeiro.id')                
                 ->orderBy('parcelamento.vencimento', 'asc')
                 ->get();
+    }
+
+    public function getMovimentById($lancamento_id)
+    {
+        return DB::table('lancamento')
+                ->where('lancamento.id', $lancamento_id)
+                ->first();
+    }
+
+    public function getAnexosByLancamentoId($lancamento_id)
+    {
+        return DB::table('anexo')
+                ->where('lancamento_id', $lancamento_id)
+                ->get();
+    }
+
+    public function getParcelasByLancamentoId($lancamento_id)
+    {
+        return DB::table('parcelamento')
+                ->where('lancamento_id', $lancamento_id)
+                ->get();
+    }
+
+    public function updateLancamentoAndParcelas($request, $lancamento_id)
+    {
+
+    /**
+     * Update the lancamento
+     */
+        DB::table('lancamento')
+        ->where('id', $lancamento_id)
+        ->update([
+            'categoria'          => $request['categoria'],
+            'grupo_financeiro'   => $request['grupoFinanceiro'],                         
+            'nome'               => $request['nome'],            
+            'data_emissao'       => $request['dataEmissao'],
+            'numero_documento'   => $request['numeroDocumento'],
+            'observacao'         => $request['observacao'],
+            'updated_at'         => date("Y-m-d H:i:s"),
+        ]);
+
+    
+        /**
+         * Update all parcelas from that lancamento
+         */
+        foreach($request['parcela'] as $index => $parcela)
+        {
+            DB::table('parcelamento')
+            ->where([
+                ['id', '=', $index],
+                ['lancamento_id', '=', $lancamento_id]
+            ])
+            ->update([
+                'valor' => $parcela['valor'],
+                'vencimento' => $parcela['vencimento'],
+                'numero_parcial' => $parcela['numero'],
+                'observacao' => $parcela['observacao']
+            ]);           
+        }
+        
     }
     
 }

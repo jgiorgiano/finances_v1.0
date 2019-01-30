@@ -91,12 +91,9 @@ class AbstractLancamentoController
     public function edit($user, $group, $lancamento_id)
     {               
        $data = $this->service->edit($group, $lancamento_id);
-        dd($data);
-       return view('finance.lancamento.editLancamento', 
-       [          
-           'lancamento' => $data['lancamento'],
-           'data'       => $data['details']
-       ]);
+           
+       
+       return view('finance.lancamento.editLancamento')->with($data);
     }
 
     /**
@@ -106,9 +103,10 @@ class AbstractLancamentoController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(LancamentoRequest $request, $id)
-    {
-         $this->service->update($request->validated(), $id);
+    public function update(LancamentoRequest $request, $user_id, $group_id, $lancamento_id)
+    {      
+        
+         $data = $this->service->update($request->validated(), $lancamento_id);
         
         session()->flash('success', [
              'success' => $data['success'],
