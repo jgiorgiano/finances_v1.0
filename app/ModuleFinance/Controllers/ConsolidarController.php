@@ -3,19 +3,21 @@
 namespace App\ModuleFinance\Controllers;
 
 use Illuminate\Http\Request;
-use App\ModuleFinance\Repositories\ParcelamentoRepository;
-use App\ModuleFinance\Entities\Parcelamento;
-use App\ModuleFinance\Services\ParcelamentoService;
+use App\ModuleFinance\Repositories\ComposicaoRepository;
+use App\ModuleFinance\Entities\Composicao;
+use App\ModuleFinance\Services\ComposicaoService;
+use App\ModuleFinance\Entities\Lancamento;
+use Illuminate\Support\Facades\DB;
 
-class ParcelamentoController
+class ConsolidarController
 {
-    
-    public function __construct(ParcelamentoService $service)
-    {                
-        $this->service = $service;
-
+   
+    public function __construct(Lancamento $model)
+    {
+        $this->lancamento = $model;
     }
-
+    
+   
     /**
      * Display a listing of the resource.
      *
@@ -28,12 +30,12 @@ class ParcelamentoController
 
     /**
      * Show the form for creating a new resource.
-     *
+     *@param int $id
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($user_id, $group_id, $lancamento_id)
     {
-        //
+       
     }
 
     /**
@@ -43,11 +45,8 @@ class ParcelamentoController
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {     
-        
-        $this->service->store($request);
-
-        return redirect()->back();
+    {
+        //
     }
 
     /**
@@ -56,9 +55,17 @@ class ParcelamentoController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, $group, $lancamento_id, $parcela)
     {
-        //
+        
+        $lan = $this->lancamento->get($lancamento_id);
+        //$lancamento = Lancamento::where('id', $lancamento_id)->get();
+         /* $lan = DB::table('lancamento')
+            ->where('id', $lancamento_id)
+            ->get(); */
+        $p = $lan->parcelas();
+        dd($p);
+      
     }
 
     /**
@@ -94,5 +101,4 @@ class ParcelamentoController
     {
         //
     }
-
 }

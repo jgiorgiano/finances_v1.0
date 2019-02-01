@@ -25,7 +25,7 @@ Route::middleware(['auth', 'user'])->group(function(){
 Route::middleware(['auth',  'user', 'groupMember'])->group(function(){
     Route::resource('account/{account}/group', 'GroupController');
     Route::post('account/{account}/group/{group}/invite', 'GroupController@invite')->name('group.invite');
-    Route::DELETE('account/{account}/group/{group}/delete/{member}', 'GroupController@deleteMember')->name('group.deleteMember');
+    Route::DELETE('account/{account}/group/{group}/delete', 'GroupController@deleteMember')->name('group.deleteMember');
     Route::DELETE('account/{account}/group/{group}/leave', 'GroupController@leaveGroup')->name('group.leave');
     Route::get('account/{account}/group/{group}/join', 'GroupController@joinGroup')->name('group.joinGroup');
 
@@ -43,6 +43,7 @@ Route::middleware(['auth',  'user', 'groupMember'])->group(function(){
     Route::resource('account/{account}/group/{group}/pagamentos',       '\App\ModuleFinance\Controllers\PagamentoController');
     Route::resource('account/{account}/group/{group}/recebimentos',     '\App\ModuleFinance\Controllers\RecebimentoController');
     Route::resource('account/{account}/group/{group}/parcelamento',     '\App\ModuleFinance\Controllers\ParcelamentoController');
+    Route::resource('account/{account}/group/{group}/lancamento/{lancamento}/consolidar',     '\App\ModuleFinance\Controllers\ConsolidarController');
 
 });
 

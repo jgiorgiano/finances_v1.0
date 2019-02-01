@@ -10,7 +10,7 @@ You Are logged in!!
 @foreach($groups as $group)
 
 @empty($group->accepted_at)    
-    <div class="card text-white bg-light my-3">
+    <div class="card bg-light my-3">
         <div class="card-body">
             <h5 class="card-title"> Group Name: {{ $group->nome }}</h5>
             <h6 class="card-subtitle">Group Manager: {{ $group->first_name}} {{$group->last_name}}</h6>

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Lancamento extends Model
 {
-    protected $table = ['lancamento'];
+    protected $table = 'lancamento';
 
     protected $fillable = [
         'nome', 
@@ -15,5 +15,17 @@ class Lancamento extends Model
         'numero_documento', 
         'observacao',        
     ];
+
+    public function get($id)
+    {       
+        return Lancamento::find($id);
+    }
+
+    public function parcelas()
+    {
+        return $this->hasMany('App\ModuleFinance\Entities\Parcelamento');
+    }
+
+    
     
 }

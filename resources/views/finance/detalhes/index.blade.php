@@ -5,11 +5,12 @@
 <div class="col-md-6 offset-md-3">
   <div class="card">
     <div class="card-body">
-      <h5 class="card-title text-center">{{$title}}</h5>
-      <hr>
-      
+        <h5 class="card-title text-center">{{$title}}</h5>
+        
+    @empty(!$data)          
+      <hr>     
       @foreach($data as $data)
-      <form method="POST" action="{{ route($route . '.update', ['account' => Auth::id(), 'group_id' => $data->group_id, 'categoria' => $data->id]) }}">
+      <form method="POST" action="{{ route($route . '.update', ['account' => Request::segment(2), 'group_id' => Request::segment(4), 'categoria' => $data->id]) }}">
       @method('PUT')      
       @csrf      
         <div class="form-row">
@@ -27,18 +28,20 @@
             </div>
           </form>    
             <div>
-              <form action="{{route($route . '.destroy', ['account' => Auth::id(), 'group_id' => $data->group_id, 'categoria' => $data->id])}}" method="post">
+              <form action="{{route($route . '.destroy', ['account' => Request::segment(2), 'group_id' => Request::segment(4), 'categoria' => $data->id])}}" method="post">
                 @method('DELETE')
                 @csrf
                 <button class="btn btn-danger" type="submit">Apagar</button>
               </form>
             </div>
         </div>
-      @endforeach
+        @endforeach
 
+    @endempty
+      
       <div id="newItem" {{ empty($data->id) ? '' : "style=display:none;" }} >        
-          <hr>
-      <form action= {{ route($route.'.store', ['account' => Auth::id(), 'group_id' => $data->group_id] )}} method="POST">
+          
+      <form action= {{ route($route.'.store', ['account' => Request::segment(2), 'group_id' => Request::segment(4)] )}} method="POST">
           @csrf
           <div class="form-row">
               <div class="form-group col-md">            

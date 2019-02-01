@@ -110,7 +110,7 @@ class GroupController extends Controller
 
     }
 
-    public function deleteMember($owner_id, $group_id, $member_id)
+    public function deleteMember($member_id, $group_id)
     {
         $this->service->deleteMember($member_id, $group_id);
 

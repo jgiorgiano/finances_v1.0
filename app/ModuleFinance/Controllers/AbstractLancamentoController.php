@@ -29,8 +29,9 @@ class AbstractLancamentoController
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($group_id)
+    public function create($user_id, $group_id)
     {
+        
        $data = $this->service->create($group_id);      
         
        return view('finance.lancamento.createLancamento', [

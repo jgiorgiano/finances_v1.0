@@ -11,5 +11,10 @@ class Composicao extends Model
     protected $fillable = [
         'valor', 'group_id'         
     ];
+
+    public function parcelamento()
+    {
+        return $this->belongsTo('App\ModuleFinance\Entities\Parcelamento');
+    }
     
 }
