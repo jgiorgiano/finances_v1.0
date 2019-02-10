@@ -46,7 +46,7 @@ class GroupController extends Controller
      */
     public function store(groupRequest $request, $user_id)
     {
-
+        
         $this->service->store($request->validated(), $user_id);
 
         return redirect()->back();

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\ModuleFinance\Repositories\ComposicaoRepository;
 use App\ModuleFinance\Entities\Composicao;
 use App\ModuleFinance\Services\ComposicaoService;
+use App\ModuleFinance\Requests\ComposicaoRequest;
 
 class ComposicaoController
 {
@@ -31,9 +32,14 @@ class ComposicaoController
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id, $group, $parcela)
     {
-        //
+        $data = $this->service->show($group, $parcela);        
+
+        //dd($data);
+        return view('finance.lancamento.consolidarLancamento')
+                ->with($data);
+
     }
 
     /**
@@ -42,9 +48,12 @@ class ComposicaoController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ComposicaoRequest $request, $user_id, $group, $lancamento_id)
     {
-        //
+               
+        $data = $this->service->store($request->validated(), $user_id, $lancamento_id);
+
+        return redirect()->back();
     }
 
     /**
@@ -55,7 +64,7 @@ class ComposicaoController
      */
     public function show($id)
     {
-        //
+       
     }
 
     /**

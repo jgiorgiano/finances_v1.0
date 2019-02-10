@@ -70,7 +70,7 @@ class userService {
        
         $invited = $invitation->getByEmail($newUser->email);       
        
-        $this->group->createMember($invited->group_id, $newUser->id);
+        $this->group->createMember($newUser->id, $invited->group_id);
 
         $invitation->destroy($invited->id);
 

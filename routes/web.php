@@ -43,7 +43,7 @@ Route::middleware(['auth',  'user', 'groupMember'])->group(function(){
     Route::resource('account/{account}/group/{group}/pagamentos',       '\App\ModuleFinance\Controllers\PagamentoController');
     Route::resource('account/{account}/group/{group}/recebimentos',     '\App\ModuleFinance\Controllers\RecebimentoController');
     Route::resource('account/{account}/group/{group}/parcelamento',     '\App\ModuleFinance\Controllers\ParcelamentoController');
-    Route::resource('account/{account}/group/{group}/lancamento/{lancamento}/consolidar',     '\App\ModuleFinance\Controllers\ConsolidarController');
+    Route::resource('account/{account}/group/{group}/parcelamento/{parcelamento}/consolidar',     '\App\ModuleFinance\Controllers\ComposicaoController');
 
 });
 

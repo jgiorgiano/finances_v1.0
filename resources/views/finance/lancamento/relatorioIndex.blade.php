@@ -35,7 +35,7 @@
             <td></td>
             <td>
                 <a href={{ route(Request::segment(5) . '.edit', ['account' => Request::segment(2), 'group' => Request::segment(4), 'lancamento' => $mt->id])}} class="btn btn-sm btn-light">Gerenciar</a>
-                <a href={{ route('consolidar.show', ['account' => Request::segment(2), 'group' => Request::segment(4), 'lancamento' => $mt->id, 'consolidar' => $mt->parcela_id])}} class="btn btn-sm btn-success">Quitar</a>
+                <a href={{ route('consolidar.create', ['account' => Request::segment(2), 'group' => Request::segment(4), 'parcelamento' => $mt->parcela_id])}} class="btn btn-sm btn-success">Quitar</a>
                 @if($mt->observacao != null || $mt->obsParcela != null) 
                   <span class="badge badge-pill badge-info">obs</span>
                 @endif

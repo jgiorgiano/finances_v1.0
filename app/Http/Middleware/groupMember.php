@@ -17,7 +17,14 @@ class groupMember
     public function handle($request, Closure $next)
     
     {
-        //dd($request->group, member::hasGroups());
+      
+
+        if($request->group == null){
+
+            return $next($request);
+
+        }
+
         if( in_array($request->group, member::hasGroups() )){            
             
             return $next($request);

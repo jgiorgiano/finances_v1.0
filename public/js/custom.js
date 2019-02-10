@@ -64,7 +64,32 @@ $('#btnValue').on('click', function(e){
         $("#line").append('<div class="col-md-3 py-1" id="obs" ></div>')
         $('#obs').append('<input type="text" class="form-control" id="observacao" name="parcela['+ i +'][observacao]" placeholder="Obs." ></input>')
     }
-
     
+})
+
+
+/*========================================== Quitacão PAGE=================================================== */
+
+var i = 0;
+    $('#btnNewPgto').on('click', function(e){
+        e.preventDefault();
+        var pgto = $('#pgto0').clone().insertAfter('#pgto' + i);
+        i++; 
+        pgto.removeAttr('id');
+        pgto.attr('id', 'pgto' + i );
+        pgto.find('.valor').val('').attr('name', 'pgto[' + i + '][valor]'); 
+        pgto.find('.contaCorrente').attr('name', 'pgto[' + i + '][contaCorrente]');
+        pgto.find('.formaPagamento').attr('name', 'pgto[' + i + '][formaPagamento]');
+       
+       
+    });
+
+    $('.valores').on('change', function(e){
+        var sum = 0;
+        $('.valor').each(function(){
+            sum += parseFloat(this.value);            
+            $('#total').text('Total Inserido: R$ ' + sum);            
+    });
+
 })
 

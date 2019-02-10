@@ -69,7 +69,7 @@ class UserController extends Controller
     public function invitedRegister(userRequest $request)
     {
         
-        $this->service->invitedRegister($request->all());
+        $this->service->invitedRegister($request->validated());
 
         return redirect()->route('login');
 

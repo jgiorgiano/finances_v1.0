@@ -156,5 +156,7 @@
     </div>
 @endif
 
+<a href="{{ route('home') }}" class="btn btn-secondary">Voltar</a>
+
 
 @endsection
