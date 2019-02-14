@@ -36,7 +36,8 @@ class LancamentoRepository extends Repository{
         ->insertGetId([
             'categoria'          => $request['categoria'],
             'grupo_financeiro'   => $request['grupoFinanceiro'],
-            'group'              => $request['group_id'],               
+            'group'              => $request['group_id'],     
+            'situacao'           => $request['situacao'],          
             'nome'               => $request['nome'],
             'tipo'               => $request['tipo'],
             'data_emissao'       => $request['dataEmissao'],
@@ -54,6 +55,7 @@ class LancamentoRepository extends Repository{
                 'vencimento'        => $data['vencimento'],
                 'numero_parcial'    => $data['numero'],
                 'observacao'        => $data['observacao'],
+                'situacao'          => $data['situacao']
             ]);
         } 
             
@@ -80,7 +82,8 @@ class LancamentoRepository extends Repository{
                     'parcelamento.observacao as obs_parcela',
                     'lancamento.group',
                     'lancamento.tipo',
-                    DB::raw('SUM(composicao_pagamento.valor) as total_pago')                    
+                    DB::raw('SUM(composicao_pagamento.valor) as total_pago'),
+                    'situacao.nome as situacao'                    
                 )
                 ->where([
                     ['lancamento.group',   '=', $group_id],
@@ -91,6 +94,7 @@ class LancamentoRepository extends Repository{
                 ->leftjoin('categoria', 'lancamento.categoria', '=', 'categoria.id')
                 ->leftjoin('grupo_financeiro', 'lancamento.grupo_financeiro', '=', 'grupo_financeiro.id')  
                 ->leftjoin('anexo', 'anexo.lancamento_id', '=', 'lancamento.id')
+                ->leftjoin('situacao', 'situacao.id', '=', 'parcelamento.situacao')
                 ->groupBy('parcelamento.id', 'anexo.path')
                 ->orderBy('parcelamento.vencimento', 'asc')
                 ->get();

@@ -18,12 +18,13 @@ class ComposicaoService {
     public function store($request, $user_id, $parcela_id)
     {
        $sum = 0; // total de pagamentos enviados pela request
+       $saldoParcela = $this->saldoParcela($parcela_id);
 
         foreach($request['pgto'] as $pgto){
            $sum += $pgto['valor'];
         }            
 
-        if($sum > $this->saldoParcela($parcela_id)){
+        if($sum > ($saldoParcela * 1.15)){
 
             return session()->flash('message',
                 ['success' => false,
@@ -31,6 +32,8 @@ class ComposicaoService {
             );
 
         }   
+
+        if()
         
         $prepared = [];
         foreach($request['pgto'] as $pgto){

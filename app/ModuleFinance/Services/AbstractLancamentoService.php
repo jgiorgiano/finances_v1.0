@@ -43,7 +43,9 @@ class AbstractLancamentoService {
 
             $request['tipo']        = $this->type;            
             $request['group_id']    = $group_id;
-
+            $request['situacao']    = 1; // Pendente
+            $request['parcela']['situacao'] = 1; // Pendente
+ 
             $result = $this->repository->newMoviment($request);
 
             return [
