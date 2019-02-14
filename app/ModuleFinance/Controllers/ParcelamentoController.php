@@ -90,9 +90,11 @@ class ParcelamentoController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($user, $group, $parcela_id)
     {
-        //
+        $this->service->deleteParcela($parcela_id);
+
+        return redirect()->back();
     }
 
 }

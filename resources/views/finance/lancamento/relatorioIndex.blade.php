@@ -23,7 +23,7 @@
         <tbody>
           {{--  {{dd($movimentos)}}  --}}
         @foreach($movimentos as $mt)
-          <tr>               
+          <tr class={{ $mt->vencimento < date('Y-m-d', time()) && $mt->valor > $mt->total_pago ? 'text-danger' : ''}}>                           
             <td>{{ $mt->nome}}</td>
             <td>R$ {{ $mt->valor}}</td>
             <td>{{ $mt->vencimento}}</td>
@@ -32,15 +32,22 @@
             <td>{{ $mt->grupo_financeiro}}</td>
             <td>{{ $mt->created_at}}</td>
             <td>{{ $mt->data_emissao}}</td>
-            <td></td>
+            <td>{{  
+              (($mt->valor == $mt->total_pago) ? 'PAGO' : 
+              (($mt->vencimento < date('Y-m-d', time())) ? 'Em Atraso' :
+              (($mt->valor > $mt->total_pago && $mt->total_pago > 0) ? 'Pgto Parcial' :
+               'Em Aberto')))}}
+            </td>
             <td>
                 <a href={{ route(Request::segment(5) . '.edit', ['account' => Request::segment(2), 'group' => Request::segment(4), 'lancamento' => $mt->id])}} class="btn btn-sm btn-light">Gerenciar</a>
-                <a href={{ route('consolidar.create', ['account' => Request::segment(2), 'group' => Request::segment(4), 'parcelamento' => $mt->parcela_id])}} class="btn btn-sm btn-success">Quitar</a>
-                @if($mt->observacao != null || $mt->obsParcela != null) 
+                @if($mt->valor > $mt->total_pago)
+                  <a href={{ route('consolidar.create', ['account' => Request::segment(2), 'group' => Request::segment(4), 'parcelamento' => $mt->parcela_id])}} class="btn btn-sm btn-success">Quitar</a>
+                @endif
+                @if($mt->observacao != null || $mt->obs_parcela != null) 
                   <span class="badge badge-pill badge-info">obs</span>
                 @endif
                 @if($mt->path != null) 
-                <span class="badge badge-pill badge-info">&#128206</span>
+                  <span class="badge badge-pill badge-info">&#128206</span>
                 @endif         
             </td>                
           </tr>

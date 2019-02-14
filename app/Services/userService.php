@@ -63,7 +63,7 @@ class userService {
 
     public function invitedRegister($request)
     { 
-
+        
        $newUser = $this->repository->create($request);
        
         $invitation = new \App\Invitation();

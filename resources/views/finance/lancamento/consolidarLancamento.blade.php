@@ -19,7 +19,8 @@
             @empty(!$parcela->observacao_lancamento)
                 <li class="list-group-item">Obs da Parcela: {{$parcela->observacao_lancamento}}</li>
             @endempty
-            <li class="list-group-item">Valor Parcela: {{$parcela->valor}} [**fazer funcao para calculo do valor em aberto da parcela]</li>
+            <li class="list-group-item">Valor Parcela: R$ {{$parcela->valor}}</li>
+            <li class="list-group-item">Pagamentos Efetuados: R$ {{$parcela->total_pago ?? '--'}}</li>
 
         </ul>
            
@@ -36,7 +37,8 @@
     <div class="border p-2 valores">
         <form action="{{ route('consolidar.store', ['account' => Request::segment(2), 'group_id'=> Request::segment(4), 'parcela' => $parcela->id])}}" method="POST">
         @csrf
-        <label id="total"></label>
+        <p class="mb-0">Saldo a pagar: R$ {{$parcela->valor - $parcela->total_pago}}</p>
+        <label class="my-1" id="total"></label>
         <div class="form-row" id="pgto0">
             <div class="col-md-4 py-1">
                 <label for="Valor">Valor</label>

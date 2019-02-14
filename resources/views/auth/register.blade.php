@@ -9,7 +9,7 @@
 
                 <div class="card-body"> 
                     @isset($data->email)
-                        <form method="POST" action="{{ route('invited.register') }}">
+                        <form method="POST" action="{{ route('invited.register', ['email' => Request::segment(2)]) }}">
                     @endisset
                     @empty($data->email)
                         <form method="POST" action="{{ route('register') }}">                   

@@ -37,6 +37,7 @@ class ComposicaoController
         $data = $this->service->show($group, $parcela);        
 
         //dd($data);
+
         return view('finance.lancamento.consolidarLancamento')
                 ->with($data);
 
@@ -48,10 +49,10 @@ class ComposicaoController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ComposicaoRequest $request, $user_id, $group, $lancamento_id)
+    public function store(ComposicaoRequest $request, $user_id, $group, $parcela_id)
     {
-               
-        $data = $this->service->store($request->validated(), $user_id, $lancamento_id);
+                       
+        $data = $this->service->store($request->validated(), $user_id, $parcela_id);
 
         return redirect()->back();
     }

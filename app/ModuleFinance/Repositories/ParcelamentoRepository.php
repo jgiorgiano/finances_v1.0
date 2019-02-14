@@ -26,5 +26,5 @@ class ParcelamentoRepository extends Repository{
         DB::table('parcelamento')
         ->insert($parcelas);
     }
-
+    
 }

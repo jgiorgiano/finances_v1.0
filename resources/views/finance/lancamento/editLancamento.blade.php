@@ -4,7 +4,7 @@
 
 <h5 class="h5 text-center">Editar {{$lancamento->nome}} </h5>
 <hr>
-<div class="col-lg-6 col-md-8 offset-md-2 offset-lg-3">
+<div class="col-lg-8 col-md-10 offset-lg-2 offset-md-2">
     <div>
         <form action={{ route(Request::segment(5) . '.update', ['account' => Request::segment(2), 'group_id'=> Request::segment(4), 'lancamento' => $lancamento->id])}} method="POST">
             @csrf
@@ -50,42 +50,53 @@
             </div>
                 
             <div>
-                <label>Pagamento</label>
-                <div class="form-row">
-                    <div class="col-md-3">
-                        <label>Valor</label>
-                    </div>
-                    <div class="col-md-4">
-                        <label>Vencimento</label>
-                    </div>
-                    <div class="col-md">
-                        <label>Numero</label>
-                    </div>
-                    <div class="col-md">
-                        <label>Obs</label>
-                    </div>
-                    <div class="col-md-2">
-                        <label>Opcões</label>
-                    </div>
-                </div>
+                <label>Parcelas</label>                
                 @foreach($parcelas as $parcela)
                 <div class="form-row">
-                    <div class="col-md-3 pb-1">
-                        <input type="text" class="form-control" name="parcela[{{$parcela->id}}][valor]" value={{$parcela->valor}}>
+                    <div class="col-md-2 pb-1">
+                        @if($loop->first)
+                            <label>Valor</label>
+                        @endif
+                        <input type="text" class="form-control" name="parcela[{{$parcela->id}}][valor]" value={{$parcela->valor}} {{$parcela->data_pagamento != null ? 'disabled' : ''}}>
                     </div>
-                    <div class="col-md-4 pb-1">
-                        <input type="date" class="form-control" name="parcela[{{$parcela->id}}][vencimento]" value={{$parcela->vencimento}} >
+                    <div class="col-md-2 pb-1">
+                        @if($loop->first)
+                            <label>Efetuados</label>
+                        @endif
+                        <input type="text" class="form-control" disabled value={{$parcela->total_pago ?? '-'}} >
+                    </div>
+                    <div class="col-md-2 pb-1">
+                        @if($loop->first)
+                            <label>Vencimento</label>
+                        @endif
+                        <input type="date" class="form-control" name="parcela[{{$parcela->id}}][vencimento]" value={{$parcela->vencimento}} {{$parcela->data_pagamento != null ? 'disabled' : ''}} >
                     </div>
                     <div class="col-md pb-1">
-                        <input type="text" class="form-control" name="parcela[{{$parcela->id}}][numero]" value={{$parcela->numero_parcial}} >
+                        @if($loop->first)
+                            <label>Numero</label>
+                        @endif
+                        <input type="text" class="form-control" name="parcela[{{$parcela->id}}][numero]" value={{$parcela->numero_parcial}} {{$parcela->data_pagamento != null ? 'disabled' : ''}} >
                     </div>
                     <div class="col-md pb-1">
+                        @if($loop->first)
+                            <label>Obs</label>
+                        @endif
                         <input type="text" class="form-control" name="parcela[{{$parcela->id}}][observacao]"value={{$parcela->observacao}} >
                     </div>
                     <div class="col-md-2 pb-1">
-                        <button class="btn btn-danger btn-sm">excluir</button>
+                        @if($loop->first)
+                            <label>Opcões</label>
+                        @endif
+                        @if($parcela->data_pagamento != null)
+                            <button class="btn btn-success" disabled>Consolidado</button>
+                            <span class="badge badge-pill badge-info">Ver Pagamentos</span>
+
+                        @else
+                            <button class="btn btn-danger btn-sm deleteParcela" data-token ={{ csrf_token() }} data-id={{$parcela->id}} data-account = {{Request::segment(2)}} data-group = {{Request::segment(4)}}>excluir</button>
+                        @endif
                     </div>
                 </div>
+                
                 @endforeach
             </div>               
             <div class="form-group pt-2">
@@ -93,7 +104,9 @@
                     <input type="text" name="observacao" value="{{$lancamento->observacao}}" class="form-control" placeholder="Digite aqui uma observacao para a conta">
             </div>
             <div class="row">
-                <button type="submit" class="btn btn-info float-right">Salvar Alteracões</button>
+                <div class="col">                    
+                    <button type="submit" class="btn btn-info float-right">Salvar Alteracões</button>
+                </div>
             </div>
         </form>
     </div>
@@ -121,7 +134,11 @@
                 </tr>   
             </table>    
         </div> 
-        <button type="submit" class="btn btn-info">Salvar novas Parcelas</button>
+        <div class="row">
+            <div class="col">
+                <button type="submit" class="btn btn-info float-right">Salvar novas Parcelas</button>
+            </div>
+        </div>
     </div>
         
 

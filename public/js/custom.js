@@ -66,6 +66,31 @@ $('#btnValue').on('click', function(e){
     }
     
 })
+/*========================================== Editar parcela PAGE=================================================== */
+
+    $('.deleteParcela').on('click', function(e){
+        e.preventDefault;
+        var id = $(this).data('id');
+        var account = $(this).data('account');
+        var group = $(this).data('group'); 
+        var token = $(this).data('token');       
+      
+        $.ajax({
+            type: "DELETE",
+            url: '/account/' + account + '/group/' + group + '/parcelamento/' + id,
+            data: {_method: 'delete', _token :token},
+            success: function (data) {
+                console.log(data);
+            },
+            error: function (data) {
+                console.log('Error:', data);
+            } 
+        });
+
+    })
+
+
+
 
 
 /*========================================== Quitacão PAGE=================================================== */

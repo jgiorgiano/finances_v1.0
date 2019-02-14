@@ -47,6 +47,7 @@ class UserRepository extends Repository{
             'gender'        => $data['gender'],
             'email'         => $data['email'],
             'password'      => \Hash::make($data['password']),
+            'email_verified_at' => now(),
         ]);
 
 

@@ -63,7 +63,7 @@ class LancamentoRepository extends Repository{
 
     public function getAllMovimentsByType($group_id, $type)
     {
-        return DB::table('lancamento')
+        return DB::table('parcelamento')
                 ->select(
                     'lancamento.id',
                     'lancamento.nome',
@@ -75,25 +75,31 @@ class LancamentoRepository extends Repository{
                     'parcelamento.id as parcela_id',                   
                     'parcelamento.valor',
                     'parcelamento.vencimento',
-                    'parcelamento.numero_parcial',
-                    'parcelamento.observacao as obsParcela',
-                    'anexo.path' 
+                    'parcelamento.numero_parcial',                   
+                    'anexo.path',
+                    'parcelamento.observacao as obs_parcela',
+                    'lancamento.group',
+                    'lancamento.tipo',
+                    DB::raw('SUM(composicao_pagamento.valor) as total_pago')                    
                 )
                 ->where([
-                    ['group',   '=', $group_id],
-                    ['tipo',    '=', $type]    
+                    ['lancamento.group',   '=', $group_id],
+                    ['lancamento.tipo',    '=', $type]    
                 ])
-                ->leftJoin('parcelamento', 'lancamento.id', '=', 'parcelamento.lancamento_id')
-                ->leftjoin('anexo', 'lancamento.id', '=', 'anexo.lancamento_id')
-                ->join('categoria', 'lancamento.categoria', '=', 'categoria.id')
-                ->join('grupo_financeiro', 'lancamento.grupo_financeiro', '=', 'grupo_financeiro.id')                
+                ->leftJoin('lancamento', 'lancamento.id', '=', 'parcelamento.lancamento_id')
+                ->leftjoin('composicao_pagamento', 'composicao_pagamento.parcelamento_id', '=', 'parcelamento.id')             
+                ->leftjoin('categoria', 'lancamento.categoria', '=', 'categoria.id')
+                ->leftjoin('grupo_financeiro', 'lancamento.grupo_financeiro', '=', 'grupo_financeiro.id')  
+                ->leftjoin('anexo', 'anexo.lancamento_id', '=', 'lancamento.id')
+                ->groupBy('parcelamento.id', 'anexo.path')
                 ->orderBy('parcelamento.vencimento', 'asc')
                 ->get();
+                
     }
 
     public function getMovimentById($lancamento_id)
     {
-        return DB::table('lancamento')
+        return DB::table('lancamento')                
                 ->where('lancamento.id', $lancamento_id)
                 ->first();
     }
@@ -102,13 +108,20 @@ class LancamentoRepository extends Repository{
     {
         return DB::table('anexo')
                 ->where('lancamento_id', $lancamento_id)
+                
                 ->get();
     }
 
     public function getParcelasByLancamentoId($lancamento_id)
     {
         return DB::table('parcelamento')
+                ->select(
+                    'parcelamento.*',
+                    DB::raw('SUM(composicao_pagamento.valor) as total_pago')
+                )
                 ->where('lancamento_id', $lancamento_id)
+                ->leftjoin('composicao_pagamento', 'composicao_pagamento.parcelamento_id', '=', 'parcelamento.id')
+                ->groupBy('parcelamento.id')
                 ->get();
     }
 

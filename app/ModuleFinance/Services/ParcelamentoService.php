@@ -34,8 +34,12 @@ class ParcelamentoService {
                 'message' => "Houve um erro",
                 'data'  => null
             ];
-
         }
+    }
 
+    public function deleteParcela($id)
+    {
+        dd($id);
+        $this->repository->delete($id);
     }
 }

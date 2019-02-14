@@ -16,7 +16,9 @@ class AbstractLancamentoController
      */
     public function index($user, $group_id)
     {
-        $lancamentos = $this->service->index($group_id);         
+        $lancamentos = $this->service->index($group_id);              
+        
+        //dd($lancamentos);
 
         return view('finance.lancamento.relatorioIndex', [
             'title' => 'Relatorio Geral de ' . $this->sectionName,
@@ -93,6 +95,7 @@ class AbstractLancamentoController
     {               
        $data = $this->service->edit($group, $lancamento_id);
            
+      // dd($data);
        
        return view('finance.lancamento.editLancamento')->with($data);
     }
