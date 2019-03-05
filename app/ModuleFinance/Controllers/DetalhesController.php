@@ -44,14 +44,14 @@ class DetalhesController extends Controller
 
             $validated['group_id'] = $group_id;
 
-            $this->repository->create($validated);
+            $data = $this->repository->create($validated);
 
             session()->flash('message', [
                 'success'   => 'true',
                 'message'   => 'incluido com sucesso'
             ]);
 
-            return redirect()->back();
+            return response()->json($data);
 
         }
         catch(Exception $e)

@@ -6,23 +6,26 @@ use App\ModuleFinance\Repositories\LancamentoRepository;
 use App\ModuleFinance\Entities\Lancamento;
 use Illuminate\Http\Request;
 
-class AbstractLancamentoService {
+abstract class AbstractLancamentoService {
 
-    protected $repository;    
+    public $repository;    
     
-    public function __construct()
+    public function __construct(Request $request)
     {
-        $this->repository   = new LancamentoRepository(new Lancamento);             
+        $this->repository   = new LancamentoRepository(new Lancamento); 
+        $this->type = $request->segment(5) == 'pagamentos' ? 1 : 2;          
 
     }
 
 
-    public function index($group_id)
-    {        
-            
-        return $this->repository->getAllMovimentsByType($group_id, $this->type);
-
+    public function filtered(array $filters, int $group_id)
+    { 
+        $filters['group_id'] = $group_id;
+        $filters['type'] = $this->type;
+        
+        return $this->repository->getAllMovimentsByType($filters);
     }
+
     /**
      * Get all the resources to build the create Lancamento.     * 
      * @param Group_Id     * 
@@ -44,7 +47,7 @@ class AbstractLancamentoService {
             $request['tipo']        = $this->type;            
             $request['group_id']    = $group_id;
             $request['situacao']    = 1; // Pendente
-            $request['parcela']['situacao'] = 1; // Pendente
+            
  
             $result = $this->repository->newMoviment($request);
 

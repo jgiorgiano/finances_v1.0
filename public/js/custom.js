@@ -118,3 +118,81 @@ var i = 0;
 
 })
 
+/*========================================== AJAX configuracoes PAGE=================================================== */
+
+$(document).ready(function(){
+    
+    /* $('#cnameBtn').on('click', function(e){
+        e.preventDefault();
+        
+        console.log($(this).data('id'));
+        console.log($(input[name=_token]).val());
+
+        $.ajax({
+            type: "PUT",
+            url: 'categoria/' + $(this).data('id'),
+            data: {
+                _token: $(input[name=_token]).val(),
+                nome: $(this).val()
+            },
+            success: function(data){
+                console.log(data);
+            }
+        })
+
+    }); */
+
+    $('#btnFilter').on('click', function(e){
+        e.preventDefault();
+        var categoria = $('#cat').val();
+        var financeiro = $('#fin').val();
+
+        $.ajax({
+            type:'post',            
+            url: window.location.pathname + '/filtered',
+            data:{
+                _token: $('input[name=_token]').val(),
+                fin: financeiro,
+                cat: categoria
+            },
+            success: function (data){
+                $('#table').empty();              
+                $('#table').html(data);
+            }
+
+
+        })
+    })
+
+    $('#newCnameBtn').on('click', function (e){
+        e.preventDefault();
+
+        console.log($('input[name=_token]').val());
+        console.log($('#newCname').val());
+
+        $.ajax({
+            type: 'post',
+            url: '',
+            headers: {
+                _token:$('input[name=_token]').val()
+            },
+            data:{
+                _token:$('input[name=_token]').val(),
+                nome: $('#newCname').val()
+            },
+            success: function(data){
+                console.log(data)
+            },
+            error: function(data){
+                'eerooosooos' + console.log(data) 
+            } 
+        })
+
+
+
+    }) 
+
+
+
+
+})

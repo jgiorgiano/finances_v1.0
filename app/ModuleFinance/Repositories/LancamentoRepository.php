@@ -7,6 +7,7 @@ use App\Repositories\Repository;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use App\Repositories\ParcelamentoRepository;
+use Illuminate\Http\Request;
 
 class LancamentoRepository extends Repository{
     
@@ -31,7 +32,7 @@ class LancamentoRepository extends Repository{
      */
     public function newMoviment($request)
     {
-        
+        //dd($request);
         $lancamento_id =  DB::table('lancamento')
         ->insertGetId([
             'categoria'          => $request['categoria'],
@@ -55,50 +56,12 @@ class LancamentoRepository extends Repository{
                 'vencimento'        => $data['vencimento'],
                 'numero_parcial'    => $data['numero'],
                 'observacao'        => $data['observacao'],
-                'situacao'          => $data['situacao']
+                'situacao'          => 1, // Em Aberto
             ]);
         } 
             
         DB::table('parcelamento')
         ->insert($parcelas);
-    }
-
-    public function getAllMovimentsByType($group_id, $type)
-    {
-        return DB::table('parcelamento')
-                ->select(
-                    'lancamento.id',
-                    'lancamento.nome',
-                    'lancamento.data_emissao',
-                    'lancamento.observacao',
-                    'lancamento.created_at',
-                    'categoria.nome as categoria',
-                    'grupo_financeiro.nome as grupo_financeiro',
-                    'parcelamento.id as parcela_id',                   
-                    'parcelamento.valor',
-                    'parcelamento.vencimento',
-                    'parcelamento.numero_parcial',                   
-                    'anexo.path',
-                    'parcelamento.observacao as obs_parcela',
-                    'lancamento.group',
-                    'lancamento.tipo',
-                    DB::raw('SUM(composicao_pagamento.valor) as total_pago'),
-                    'situacao.nome as situacao'                    
-                )
-                ->where([
-                    ['lancamento.group',   '=', $group_id],
-                    ['lancamento.tipo',    '=', $type]    
-                ])
-                ->leftJoin('lancamento', 'lancamento.id', '=', 'parcelamento.lancamento_id')
-                ->leftjoin('composicao_pagamento', 'composicao_pagamento.parcelamento_id', '=', 'parcelamento.id')             
-                ->leftjoin('categoria', 'lancamento.categoria', '=', 'categoria.id')
-                ->leftjoin('grupo_financeiro', 'lancamento.grupo_financeiro', '=', 'grupo_financeiro.id')  
-                ->leftjoin('anexo', 'anexo.lancamento_id', '=', 'lancamento.id')
-                ->leftjoin('situacao', 'situacao.id', '=', 'parcelamento.situacao')
-                ->groupBy('parcelamento.id', 'anexo.path')
-                ->orderBy('parcelamento.vencimento', 'asc')
-                ->get();
-                
     }
 
     public function getMovimentById($lancamento_id)
@@ -166,6 +129,57 @@ class LancamentoRepository extends Repository{
             ]);           
         }
         
+    }
+
+//================================RELATORIOS e FILTROS========================
+
+   
+
+    public function getAllMovimentsByType($filters)
+    {        
+        $query = DB::table('parcelamento')
+                ->select('lancamento.id',
+                        'lancamento.nome',
+                        'lancamento.data_emissao',
+                        'lancamento.observacao',
+                        'lancamento.created_at',
+                        'categoria.nome as categoria',
+                        'grupo_financeiro.nome as grupo_financeiro',
+                        'parcelamento.id as parcela_id',                   
+                        'parcelamento.valor',
+                        'parcelamento.vencimento',
+                        'parcelamento.numero_parcial',                   
+                        'anexo.path',
+                        'parcelamento.observacao as obs_parcela',
+                        'lancamento.group',
+                        'lancamento.tipo',
+                        DB::raw('SUM(composicao_pagamento.valor) as total_pago'),
+                        'situacao.nome as situacao')                
+                ->leftJoin('lancamento', 'lancamento.id', '=', 'parcelamento.lancamento_id')
+                ->leftjoin('composicao_pagamento', 'composicao_pagamento.parcelamento_id', '=', 'parcelamento.id')             
+                ->leftjoin('categoria', 'lancamento.categoria', '=', 'categoria.id')
+                ->leftjoin('grupo_financeiro', 'lancamento.grupo_financeiro', '=', 'grupo_financeiro.id')  
+                ->leftjoin('anexo', 'anexo.lancamento_id', '=', 'lancamento.id')
+                ->leftjoin('situacao', 'situacao.id', '=', 'parcelamento.situacao')
+                ->where('lancamento.tipo', '=', $filters['type'])
+                ->where('lancamento.group', '=', $filters['group_id']);
+                
+                
+                if($filters['cat']){
+                    $query->where('lancamento.categoria', '=', $filters['cat']);
+                }
+
+
+                if($filters['fin']){
+                    $query->where('lancamento.grupo_financeiro', '=', $filters['fin']);
+                }
+
+                $query->groupBy('parcelamento.id', 'anexo.path')
+                ->orderBy('parcelamento.vencimento', 'asc');
+
+                return $query->get();
+               
+                
     }
     
 }

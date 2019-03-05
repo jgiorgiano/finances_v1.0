@@ -7,7 +7,7 @@ use App\ModuleFinance\Entities\Lancamento;
 use Illuminate\Http\Request;
 
 class PagamentoService extends AbstractLancamentoService{
-
-    protected $type = 1; // 1 - pagamento // 2 - Recebimentos  
-
+    
+ // 1 - pagamento // 2 - Recebimentos
+ 
 }

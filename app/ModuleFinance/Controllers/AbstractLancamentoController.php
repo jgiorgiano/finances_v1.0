@@ -6,24 +6,43 @@ use Illuminate\Http\Request;
 use App\ModuleFinance\Repositories\LancamentoRepository;
 use App\ModuleFinance\Entities\Lancamento;
 use App\ModuleFinance\Requests\LancamentoRequest;
+use App\ModuleFinance\Requests\LancamentoFilterRequest;
 
-class AbstractLancamentoController
+abstract class AbstractLancamentoController
 {    
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($user, $group_id)
+    public function index(LancamentoFilterRequest $request,$user_id, $group_id)
     {
-        $lancamentos = $this->service->index($group_id);              
+        $lancamentos = $this->service->filtered($request->all(), $group_id); 
         
-        //dd($lancamentos);
-
+        $all = $this->service->repository->getAllDetails($group_id);
+        
+        //dd($all['categorias']);
+              
         return view('finance.lancamento.relatorioIndex', [
             'title' => 'Relatorio Geral de ' . $this->sectionName,
             'movimentos' => $lancamentos,
+            'categorias' => $all['categorias'],
+            'financeiro' => $all['grupoFinanceiro']
         ]);
+    }
+
+    public function filtered(LancamentoFilterRequest $request, $user_id, $group_id)
+    {
+        $data = $this->service->filtered($request->all(), $group_id);
+        
+        return view('finance.lancamento.datatable', ['movimentos' => $data]);
+
+    }
+
+    public function filter()
+    {
+        dd('teste');
+        return view('finance.lancamento.datatable');
     }
 
     /**

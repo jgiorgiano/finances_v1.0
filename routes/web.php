@@ -45,8 +45,12 @@ Route::middleware(['auth',  'user', 'groupMember'])->group(function(){
     Route::resource('account/{account}/group/{group}/parcelamento',     '\App\ModuleFinance\Controllers\ParcelamentoController');
     Route::resource('account/{account}/group/{group}/parcelamento/{parcelamento}/consolidar',     '\App\ModuleFinance\Controllers\ComposicaoController');
 
+    Route::post('account/{account}/group/{group}/recebimentos/filtered',     '\App\ModuleFinance\Controllers\RecebimentoController@filtered');
+    Route::post('account/{account}/group/{group}/pagamentos/filtered',     '\App\ModuleFinance\Controllers\PagamentoController@filtered');
+    
 });
 
+Route::get('account/{account}/group/{group}/pagamentos/filter',     '\App\ModuleFinance\Controllers\PagamentoController@filter');
 Route::get('account/{account}/create/{token}', 'UserController@invitedForm');
 Route::post('invited/Register', 'UserController@invitedRegister')->name('invited.register');
 
